@@ -7,18 +7,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Author     : admin
 */
 
-VBox {
-    -fx-background-color: lightblue;
-    -fx-font-family: Tahoma;
-    -fx-padding: 10;
-    -fx-spacing: 5;
-    -fx-alignment: CENTER;
-    
-}
-
-HBox {
-    -fx-spacing: 5;
-}
 
 Text.Title {
     -fx-font-size: 30;
