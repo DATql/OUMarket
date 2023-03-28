@@ -90,6 +90,20 @@
             <Insets bottom="20.0" left="20.0" />
          </VBox.margin>
       </HBox>
+      <HBox prefHeight="36.0" prefWidth="728.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm Sản Phẩm">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Text>
+            <TextField prefHeight="26.0" prefWidth="190.0">
+               <HBox.margin>
+                  <Insets left="40.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
       <TableView prefHeight="372.0" prefWidth="718.0" />
    </children>
 </VBox>

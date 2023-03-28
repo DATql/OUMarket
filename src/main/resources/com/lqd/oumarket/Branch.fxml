@@ -59,6 +59,8 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="22.0" prefWidth="728.0">
          <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm Sản Phẩm" />
+            <TextField prefHeight="26.0" prefWidth="190.0" />
             <Button mnemonicParsing="false" text="Thêm">
                <HBox.margin>
                   <Insets />
