@@ -9,23 +9,23 @@ package com.lqd.pojo;
  * @author Gol
  */
 public class ReceiptDetail {
-    private int id;
+    private String id;
     private int quantity;
-    private int productID;
-    private int receiptID;
+    private String productID;
+    private String receiptID;
 
-    public ReceiptDetail(int id, int quantity, int productID, int receiptID) {
+    public ReceiptDetail(String id, int quantity, String productID, String receiptID) {
         this.id = id;
         this.quantity = quantity;
         this.productID = productID;
         this.receiptID = receiptID;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,19 +37,19 @@ public class ReceiptDetail {
         this.quantity = quantity;
     }
 
-    public int getProductID() {
+    public String getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 
-    public int getReceiptID() {
+    public String getReceiptID() {
         return receiptID;
     }
 
-    public void setReceiptID(int receiptID) {
+    public void setReceiptID(String receiptID) {
         this.receiptID = receiptID;
     }
     

@@ -11,13 +11,13 @@ import java.util.Date;
  * @author Gol
  */
 public class Promotion {
-    private int id;
+    private String id;
     private Date fromDate;
     private Date toDate;
     private float newPrice;
-    private int productID;
+    private String productID;
 
-    public Promotion(int id, Date fromDate, Date toDate, float newPrice, int productID) {
+    public Promotion(String id, Date fromDate, Date toDate, float newPrice, String productID) {
         this.id = id;
         this.fromDate = fromDate;
         this.toDate = toDate;
@@ -25,11 +25,11 @@ public class Promotion {
         this.productID = productID;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -57,11 +57,11 @@ public class Promotion {
         this.newPrice = newPrice;
     }
 
-    public int getProductID() {
+    public String getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
     

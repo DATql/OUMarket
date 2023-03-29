@@ -9,13 +9,13 @@ package com.lqd.pojo;
  * @author Gol
  */
 public class Branch {
-    private int id;
+    private String id;
     private String name;
     private String adress;
     private String phoneNumber;
-    private int managerID;
+    private String managerID;
 
-    public Branch(int id, String name, String adress, String phoneNumber, int managerID) {
+    public Branch(String id, String name, String adress, String phoneNumber, String managerID) {
         this.id = id;
         this.name = name;
         this.adress = adress;
@@ -24,11 +24,11 @@ public class Branch {
     }
 
     
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,11 +56,11 @@ public class Branch {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getManagerID() {
+    public String getManagerID() {
         return managerID;
     }
 
-    public void setManagerID(int managerID) {
+    public void setManagerID(String managerID) {
         this.managerID = managerID;
     }
     

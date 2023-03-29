@@ -11,14 +11,14 @@ import java.util.Date;
  * @author Gol
  */
 public class Customer {
-    private int id;
+    private String id;
     private String name;
     private Date dateOfBirth;
     private String sex;
     private String phoneNumber;
     private String email;
 
-    public Customer(int id, String name, Date dateOfBirth, String sex, String phoneNumber, String email) {
+    public Customer(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String email) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -27,11 +27,11 @@ public class Customer {
         this.email = email;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

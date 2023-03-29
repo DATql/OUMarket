@@ -8,6 +8,6 @@ package com.lqd.services;
  *
  * @author Gol
  */
-public class BranchServices {
+public class BranchService {
     
 }

@@ -11,14 +11,14 @@ import java.util.Date;
  * @author Gol
  */
 public class Receipt {
-    private int id;
+    private String id;
     private Date createdDate;
     private float total;
-    private int staffID;
-    private int branchID;
-    private int customerID;
+    private String staffID;
+    private String branchID;
+    private String customerID;
 
-    public Receipt(int id, Date createdDate, float total, int staffID, int branchID, int customerID) {
+    public Receipt(String id, Date createdDate, float total, String staffID, String branchID, String customerID) {
         this.id = id;
         this.createdDate = createdDate;
         this.total = total;
@@ -27,11 +27,11 @@ public class Receipt {
         this.customerID = customerID;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,27 +51,27 @@ public class Receipt {
         this.total = total;
     }
 
-    public int getStaffID() {
+    public String getStaffID() {
         return staffID;
     }
 
-    public void setStaffID(int staffID) {
+    public void setStaffID(String staffID) {
         this.staffID = staffID;
     }
 
-    public int getBranchID() {
+    public String getBranchID() {
         return branchID;
     }
 
-    public void setBranchID(int branchID) {
+    public void setBranchID(String branchID) {
         this.branchID = branchID;
     }
 
-    public int getCustomerID() {
+    public String getCustomerID() {
         return customerID;
     }
 
-    public void setCustomerID(int customerID) {
+    public void setCustomerID(String customerID) {
         this.customerID = customerID;
     }
     

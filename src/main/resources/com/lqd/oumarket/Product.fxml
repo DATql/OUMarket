@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="728.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="728.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqd.oumarket.ProductController">
    <children>
       <HBox prefHeight="22.0" prefWidth="728.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Sản Phẩm" />
-            <TextField prefHeight="26.0" prefWidth="175.0">
+            <TextField fx:id="txtName" prefHeight="26.0" prefWidth="175.0">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>
@@ -24,7 +24,7 @@
                   <Insets left="30.0" />
                </HBox.margin>
             </Text>
-            <ComboBox prefWidth="150.0">
+            <ComboBox fx:id="cbCategories" prefWidth="150.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
@@ -37,7 +37,7 @@
       <HBox prefHeight="22.0" prefWidth="728.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn Vị" />
-            <TextField prefHeight="26.0" prefWidth="169.0">
+            <TextField fx:id="txtUnit" prefHeight="26.0" prefWidth="169.0">
                <HBox.margin>
                   <Insets left="80.0" />
                </HBox.margin>
@@ -47,7 +47,7 @@
                   <Insets left="35.0" />
                </HBox.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="206.0">
+            <TextField fx:id="txtPrice" prefHeight="26.0" prefWidth="206.0">
                <HBox.margin>
                   <Insets left="65.0" />
                </HBox.margin>
@@ -60,7 +60,7 @@
       <HBox prefHeight="22.0" prefWidth="728.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số Lượng" />
-            <TextField prefHeight="26.0" prefWidth="80.0">
+            <TextField fx:id="txtQuantity" prefHeight="26.0" prefWidth="80.0">
                <HBox.margin>
                   <Insets left="65.0" />
                </HBox.margin>
@@ -70,12 +70,12 @@
                   <Insets left="30.0" />
                </HBox.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="110.0">
+            <TextField fx:id="txtOrigin" prefHeight="26.0" prefWidth="110.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" text="Thêm">
+            <Button mnemonicParsing="false" onAction="#addProductHandler" text="Thêm">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
@@ -97,7 +97,7 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="190.0">
+            <TextField fx:id="txtSearch" prefHeight="26.0" prefWidth="190.0">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>

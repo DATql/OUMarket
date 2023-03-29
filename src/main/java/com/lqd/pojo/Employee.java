@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Gol
  */
 public class Employee {
-       private int id;
+    private String id;
     private String name;
     private Date dateOfBirth;
     private String sex;
@@ -20,9 +20,9 @@ public class Employee {
     private String email;
      private String username;
     private String password;
-    private int branchID;
+    private String branchID;
     
-    public Employee(int id, String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, int branchID) {
+    public Employee(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -35,11 +35,11 @@ public class Employee {
         this.branchID = branchID;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -107,11 +107,11 @@ public class Employee {
         this.password = password;
     }
 
-    public int getBranchID() {
+    public String getBranchID() {
         return branchID;
     }
 
-    public void setBranchID(int branchID) {
+    public void setBranchID(String branchID) {
         this.branchID = branchID;
     }
    

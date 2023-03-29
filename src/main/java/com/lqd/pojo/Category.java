@@ -6,32 +6,52 @@ package com.lqd.pojo;
 
 /**
  *
- * @author Gol
+ * @author admin
  */
 public class Category {
     private int id;
-    private int categoryName;
+    private String name;
 
-    public Category(int id, int categorName) {
+    public Category(int id, String name) {
         this.id = id;
-        this.categoryName = categorName;
+        this.name = name;
     }
 
+    public Category() {
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+    
+    
+
+    /**
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getCategoryName() {
-        return categoryName;
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(int categoryName) {
-        this.categoryName = categoryName;
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
-
-    
 }
