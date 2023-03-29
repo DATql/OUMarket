@@ -4,18 +4,32 @@
  */
 package com.lqd.pojo;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.UUID;
 
 /**
  *
  * @author Gol
  */
 public class Promotion {
+
     private String id;
     private Date fromDate;
     private Date toDate;
     private float newPrice;
     private String productID;
+
+    {
+        id = UUID.randomUUID().toString();
+    }
+
+    public Promotion(Date fromDate, Date toDate, float newPrice, String productID) {
+
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.newPrice = newPrice;
+        this.productID = productID;
+    }
 
     public Promotion(String id, Date fromDate, Date toDate, float newPrice, String productID) {
         this.id = id;
@@ -64,5 +78,5 @@ public class Promotion {
     public void setProductID(String productID) {
         this.productID = productID;
     }
-    
+
 }

@@ -4,7 +4,7 @@
  */
 package com.lqd.services;
 
-import com.lqd.pojo.Product;
+import com.lqd.pojo.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,19 +16,17 @@ import java.util.List;
  *
  * @author Gol
  */
-public class ProductService {
-
-    public boolean addProduct(Product p) throws SQLException {
+public class CustomerService {
+    public boolean addCustomer(Customer b) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            PreparedStatement stm1 = conn.prepareStatement("Insert into product(id,name,unit,price,quantity,origin,categoryID)Values(?,?,?,?,?,?,?)");
-            stm1.setString(1, p.getId());
-            stm1.setString(2, p.getName());
-            stm1.setString(3, p.getUnit());
-            stm1.setFloat(4, p.getPrice());
-            stm1.setInt(5, p.getQuantity());
-            stm1.setString(6, p.getOrigin());
-            stm1.setInt(7, p.getCategoryID());
+            PreparedStatement stm1 = conn.prepareStatement("Insert into customer(id,name,dateofbirth,sex,phonenumber,email)Values(?,?,?,?,?,?)");
+            stm1.setString(1, b.getId());
+            stm1.setString(2, b.getName());
+            stm1.setDate(3, b.getDateOfBirth());
+            stm1.setString(4,b.getSex());
+            stm1.setString(5, b.getPhoneNumber());
+            stm1.setString(6,b.getEmail());
             stm1.executeUpdate();
             try {
                 conn.commit();
@@ -41,10 +39,10 @@ public class ProductService {
 
     }
 
-    public List<Product> getProducts(String kw) throws SQLException {
-        List<Product> results = new ArrayList<>();
+    public List<Customer> getCustomers(String kw) throws SQLException {
+        List<Customer> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
-            String sql = "Select * from product";
+            String sql = "Select * from customer";
             if (kw != null && !kw.isEmpty()) {
                 sql += "where name like concat('%',?,'%')";
             }
@@ -58,49 +56,49 @@ public class ProductService {
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                Product p = new Product(rs.getString("id"),
+                Customer c = new Customer(rs.getString("id"),
                         rs.getString("name"),
-                        rs.getString("unit"),
-                        rs.getFloat("price"),
-                        rs.getInt("quantity"), rs.getString("origin"),
-                        rs.getInt("categoryID"));
-                results.add(p);
+                        rs.getDate("dateofbirth"),
+                        rs.getString("sex"),
+                        rs.getString("phonenumber"),
+                        rs.getString("email"));
+                results.add(c);
             }
         }
 
         return results;
     }
 
-    public Product getProduct(String id) throws SQLException {
+    public Customer getCustomer(String id) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
-            String sql = "Select * from product where name=?";
+            String sql = "Select * from customer where name=?";
 
             PreparedStatement stm = conn.prepareCall(sql);
 
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
-            Product p = new Product(rs.getString("id"),
-                    rs.getString("name"),
-                    rs.getString("unit"),
-                    rs.getFloat("price"),
-                    rs.getInt("quantity"), rs.getString("origin"),
-                    rs.getInt("categoryID"));
-            return p;
+              Customer c = new Customer(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getDate("dateofbirth"),
+                        rs.getString("sex"),
+                        rs.getString("phonenumber"),
+                        rs.getString("email"));
+            return c;
         }
     }
 
-    public boolean updateProduct(Product p) throws SQLException {
+    public boolean updateCustomer(Customer c) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            String sql = "Update product set name=?,unit=?,price=?,quantity=?,origin=?,categoryID=? where id=?  ";
+            String sql = "Update customer set name=?,dateofbirth=?,sex=?,phonenumber=?,email=? where id=?  ";
             PreparedStatement stm = conn.prepareCall(sql);
-            stm.setString(1, p.getName());
-            stm.setString(2, p.getUnit());
-            stm.setFloat(3, p.getPrice());
-            stm.setInt(4, p.getQuantity());
-            stm.setString(5, p.getOrigin());
-            stm.setInt(7, p.getCategoryID());
-            stm.setString(7, p.getId());
+            stm.setString(1, c.getName());
+            stm.setDate(2, c.getDateOfBirth());
+            stm.setString(3,c.getSex());
+            stm.setString(4, c.getPhoneNumber());
+            stm.setString(5,c.getEmail());
+                        stm.setString(6, c.getId());
+    
             stm.executeUpdate();
 
             try {
@@ -113,9 +111,9 @@ public class ProductService {
         }
     }
 
-    public boolean deleteProduct(String id) throws SQLException {
+    public boolean deleteCustomer(String id) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
-            String sql = "DELETE FROM product WHERE id=?";
+            String sql = "DELETE FROM customer WHERE id=?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, id);
 

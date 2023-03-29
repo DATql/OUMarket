@@ -4,19 +4,33 @@
  */
 package com.lqd.pojo;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.UUID;
 
 /**
  *
  * @author Gol
  */
 public class Customer {
+
     private String id;
     private String name;
     private Date dateOfBirth;
     private String sex;
     private String phoneNumber;
     private String email;
+
+    {
+        id = UUID.randomUUID().toString();
+    }
+
+    public Customer(String name, Date dateOfBirth, String sex, String phoneNumber, String email) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 
     public Customer(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String email) {
         this.id = id;
@@ -74,6 +88,5 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
+
 }

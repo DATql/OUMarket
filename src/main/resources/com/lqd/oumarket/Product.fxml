@@ -104,6 +104,6 @@
             </TextField>
          </children>
       </HBox>
-      <TableView prefHeight="372.0" prefWidth="718.0" />
+      <TableView fx:id="tbProducts" prefHeight="372.0" prefWidth="718.0" />
    </children>
 </VBox>

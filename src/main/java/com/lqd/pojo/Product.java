@@ -4,11 +4,14 @@
  */
 package com.lqd.pojo;
 
+import java.util.UUID;
+
 /**
  *
  * @author Gol
  */
 public class Product {
+
     private String id;
     private String name;
     private String unit;
@@ -16,6 +19,19 @@ public class Product {
     private int quantity;
     private String origin;
     private int categoryID;
+
+    {
+        id = UUID.randomUUID().toString();
+    }
+
+    public Product(String name, String unit, float price, int quantity, String origin, int categoryID) {
+        this.name = name;
+        this.unit = unit;
+        this.price = price;
+        this.quantity = quantity;
+        this.origin = origin;
+        this.categoryID = categoryID;
+    }
 
     public Product(String id, String name, String unit, float price, int quantity, String origin, int categoryID) {
         this.id = id;

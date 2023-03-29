@@ -5,6 +5,7 @@
 package com.lqd.pojo;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  *
@@ -17,8 +18,18 @@ public class Receipt {
     private String staffID;
     private String branchID;
     private String customerID;
+     {
+        id = UUID.randomUUID().toString();
+    }
+    public Receipt(Date createdDate, float total, String staffID, String branchID, String customerID) {
 
-    public Receipt(String id, Date createdDate, float total, String staffID, String branchID, String customerID) {
+        this.createdDate = createdDate;
+        this.total = total;
+        this.staffID = staffID;
+        this.branchID = branchID;
+        this.customerID = customerID;
+    }
+       public Receipt(String id, Date createdDate, float total, String staffID, String branchID, String customerID) {
         this.id = id;
         this.createdDate = createdDate;
         this.total = total;
@@ -26,7 +37,6 @@ public class Receipt {
         this.branchID = branchID;
         this.customerID = customerID;
     }
-
     public String getId() {
         return id;
     }

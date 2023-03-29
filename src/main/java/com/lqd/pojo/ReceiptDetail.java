@@ -4,15 +4,29 @@
  */
 package com.lqd.pojo;
 
+import java.util.UUID;
+
 /**
  *
  * @author Gol
  */
 public class ReceiptDetail {
+
     private String id;
     private int quantity;
     private String productID;
     private String receiptID;
+
+    {
+        id = UUID.randomUUID().toString();
+    }
+
+    public ReceiptDetail(int quantity, String productID, String receiptID) {
+
+        this.quantity = quantity;
+        this.productID = productID;
+        this.receiptID = receiptID;
+    }
 
     public ReceiptDetail(String id, int quantity, String productID, String receiptID) {
         this.id = id;
@@ -52,5 +66,5 @@ public class ReceiptDetail {
     public void setReceiptID(String receiptID) {
         this.receiptID = receiptID;
     }
-    
+
 }

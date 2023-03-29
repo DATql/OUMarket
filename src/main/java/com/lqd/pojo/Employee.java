@@ -4,13 +4,15 @@
  */
 package com.lqd.pojo;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.UUID;
 
 /**
  *
  * @author Gol
  */
 public class Employee {
+
     private String id;
     private String name;
     private Date dateOfBirth;
@@ -18,10 +20,26 @@ public class Employee {
     private String phoneNumber;
     private String role;
     private String email;
-     private String username;
+    private String username;
     private String password;
     private String branchID;
-    
+
+    {
+        id = UUID.randomUUID().toString();
+    }
+
+    public Employee(String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.branchID = branchID;
+    }
+
     public Employee(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
         this.id = id;
         this.name = name;
@@ -114,5 +132,5 @@ public class Employee {
     public void setBranchID(String branchID) {
         this.branchID = branchID;
     }
-   
+
 }

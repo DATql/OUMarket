@@ -4,6 +4,8 @@
  */
 package com.lqd.pojo;
 
+import java.util.UUID;
+
 /**
  *
  * @author Gol
@@ -13,16 +15,16 @@ public class Branch {
     private String name;
     private String adress;
     private String phoneNumber;
-    private String managerID;
-
-    public Branch(String id, String name, String adress, String phoneNumber, String managerID) {
-        this.id = id;
+     {
+        id = UUID.randomUUID().toString();
+    }
+    public Branch(String id, String name, String adress, String phoneNumber) {
+        this.id=id;
         this.name = name;
         this.adress = adress;
         this.phoneNumber = phoneNumber;
-        this.managerID = managerID;
     }
-
+    
     
     public String getId() {
         return id;
@@ -56,12 +58,6 @@ public class Branch {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getManagerID() {
-        return managerID;
-    }
 
-    public void setManagerID(String managerID) {
-        this.managerID = managerID;
-    }
     
 }
