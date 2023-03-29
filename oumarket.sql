@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `branch`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `branch` (
-  `id` varchar(100) NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `adress` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `phonenumber` varchar(45) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `adress` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `phonenumber` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `id` int NOT NULL,
-  `categoryname` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `categoryname` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vi_0900_as_cs;
@@ -77,12 +77,12 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer` (
-  `id` varchar(100) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `dateofbirth` datetime NOT NULL,
-  `sex` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `phonenumber` varchar(45) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `sex` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `phonenumber` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vi_0900_as_cs;
@@ -105,17 +105,16 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `id` varchar(100) NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `adress` varchar(45) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `adress` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   `dateofbirth` datetime DEFAULT NULL,
-  `sex` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `phonenumber` varchar(10) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
-  `role` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `username` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `password` varchar(45) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
-  `branchID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
-  `employeecol` varchar(45) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `sex` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `phonenumber` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `role` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `username` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `branchID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
@@ -141,12 +140,12 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `id` varchar(100) NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `unit` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `unit` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `price` float NOT NULL,
   `quantity` int NOT NULL,
-  `origin` varchar(45) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `origin` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `categoryID` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -162,6 +161,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES ('62659938-0989-4b13-b7bb-d30b7ba20583','Rau Muống','kg',4000,20,'Vũng Tàu',7),('86c3bbe6-f62d-46f6-a0f8-0dcaa5a0a179','Hạt Nêm K\'Norr','Gói',7000,207,'Việt Nam',2),('c8b88a5c-a103-41eb-a623-fb39688e67f8','Chổi Lông Gà','Cái',30000,35,'Lâm Đồng',3),('e275c05c-0351-4f23-a804-ef40005dcaca','Dầu Ăn Tường An','Chai',25000,250,'Việt Nam',1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,11 +173,11 @@ DROP TABLE IF EXISTS `promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `promotion` (
-  `id` varchar(100) NOT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `fromdate` datetime NOT NULL,
   `todate` datetime NOT NULL,
   `newprice` float NOT NULL,
-  `productID` varchar(100) NOT NULL,
+  `productID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_promotion_product_idx` (`productID`),
@@ -202,12 +202,12 @@ DROP TABLE IF EXISTS `receipt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `receipt` (
-  `id` varchar(100) NOT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `created_date` datetime NOT NULL,
   `total` float NOT NULL,
-  `staffID` varchar(100) DEFAULT NULL,
-  `branchID` varchar(100) DEFAULT NULL,
-  `customerID` varchar(100) DEFAULT NULL,
+  `staffID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `branchID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `customerID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_receipt_employee_idx` (`staffID`),
@@ -236,10 +236,10 @@ DROP TABLE IF EXISTS `receipt_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `receipt_detail` (
-  `id` varchar(100) NOT NULL,
+  `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `quantity` int NOT NULL,
-  `productID` varchar(100) DEFAULT NULL,
-  `receiptID` varchar(100) DEFAULT NULL,
+  `productID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
+  `receiptID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_receiptdetail_detail_idx` (`receiptID`),
@@ -267,4 +267,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-29 14:34:26
+-- Dump completed on 2023-03-29 22:35:44
