@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,13 +72,16 @@ public class ProductService {
         return results;
     }
 
-    public Product getProduct(String id) throws SQLException {
+    public Product getProduct(String name) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
+
             String sql = "Select * from product where name=?";
 
             PreparedStatement stm = conn.prepareCall(sql);
 
-            stm.setString(1, id);
+             stm.setObject(1, name, Types.NVARCHAR);
+                                                                      System.out.println(stm);
+
             ResultSet rs = stm.executeQuery();
             Product p = new Product(rs.getString("id"),
                     rs.getString("name"),
@@ -85,6 +89,7 @@ public class ProductService {
                     rs.getFloat("price"),
                     rs.getInt("quantity"), rs.getString("origin"),
                     rs.getInt("categoryID"));
+          
             return p;
         }
     }
@@ -99,7 +104,7 @@ public class ProductService {
             stm.setFloat(3, p.getPrice());
             stm.setInt(4, p.getQuantity());
             stm.setString(5, p.getOrigin());
-            stm.setInt(7, p.getCategoryID());
+            stm.setInt(6, p.getCategoryID());
             stm.setString(7, p.getId());
             stm.executeUpdate();
 
