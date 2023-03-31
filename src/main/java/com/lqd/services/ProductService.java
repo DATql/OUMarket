@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import com.lqd.utils.StringStorage;
 
 /**
  *
@@ -71,25 +73,30 @@ public class ProductService {
         return results;
     }
 
-    public Product getProduct(String id) throws SQLException {
-        try (Connection conn = jdbcService.getConn()) {
-            String sql = "Select * from product where name=?";
-
-            PreparedStatement stm = conn.prepareCall(sql);
-
-            stm.setString(1, id);
-            ResultSet rs = stm.executeQuery();
-            Product p = new Product(rs.getString("id"),
-                    rs.getString("name"),
-                    rs.getString("unit"),
-                    rs.getFloat("price"),
-                    rs.getInt("quantity"), rs.getString("origin"),
-                    rs.getInt("categoryID"));
-            return p;
-        }
-    }
+//    public Product getProduct(Product p) throws SQLException {
+//        try (Connection conn = jdbcService.getConn()) {
+//
+//            String sql = "Select * from product where name=?";
+//
+//            PreparedStatement stm = conn.prepareCall(sql);
+//
+//            stm.setString(1, name.getStr());
+//
+//            ResultSet rs = stm.executeQuery();
+//            Product p = new Product(rs.getString("id"),
+//                    rs.getString("name"),
+//                    rs.getString("unit"),
+//                    rs.getFloat("price"),
+//                    rs.getInt("quantity"), rs.getString("origin"),
+//                    rs.getInt("categoryID"));
+//
+//            return p;
+//        }
+//    }
 
     public boolean updateProduct(Product p) throws SQLException {
+                    System.out.println("đã chạy vào hàm");
+
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
             String sql = "Update product set name=?,unit=?,price=?,quantity=?,origin=?,categoryID=? where id=?  ";
@@ -99,10 +106,10 @@ public class ProductService {
             stm.setFloat(3, p.getPrice());
             stm.setInt(4, p.getQuantity());
             stm.setString(5, p.getOrigin());
-            stm.setInt(7, p.getCategoryID());
+            stm.setInt(6, p.getCategoryID());
             stm.setString(7, p.getId());
             stm.executeUpdate();
-
+            System.out.println(stm);
             try {
                 conn.commit();
                 return true;
