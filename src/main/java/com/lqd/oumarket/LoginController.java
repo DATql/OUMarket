@@ -12,5 +12,6 @@ public class LoginController {
     @FXML
     private void switchToMainUI() throws IOException {
         App.setRoot("MainUI");
+        
     }
 }

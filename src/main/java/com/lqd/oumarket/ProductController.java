@@ -79,6 +79,13 @@ public class ProductController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
+            this.txtSearch.textProperty().addListener(e -> {
+            try {
+                this.loadTableData(this.txtSearch.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(PromotionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     public void addProductHandler(ActionEvent event) throws SQLException {

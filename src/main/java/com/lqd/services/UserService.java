@@ -4,7 +4,7 @@
  */
 package com.lqd.services;
 
-import com.lqd.pojo.Employee;
+import com.lqd.pojo.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,9 +16,9 @@ import java.util.List;
  *
  * @author Gol
  */
-public class EmployeeService {
+public class UserService {
 
-    public boolean addEmployee(Employee e) throws SQLException {
+    public boolean addEmployee(User e) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
             PreparedStatement stm1 = conn.prepareStatement("Insert into employee(id,name,dateofbirth,sex,phonenumber,role,username,password,branchID)Values(?,?,?,?,?,?,?,?,?)");
@@ -44,8 +44,8 @@ public class EmployeeService {
 
     }
 
-    public List<Employee> getEmployees(String kw) throws SQLException {
-        List<Employee> results = new ArrayList<>();
+    public List<User> getEmployees(String kw) throws SQLException {
+        List<User> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from employee";
             if (kw != null && !kw.isEmpty()) {
@@ -61,7 +61,7 @@ public class EmployeeService {
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                Employee c = new Employee(rs.getString("id"),
+                User c = new User(rs.getString("id"),
                         rs.getString("name"),
                         rs.getDate("dateofbirth"),
                         rs.getString("sex"),
@@ -78,7 +78,7 @@ public class EmployeeService {
         return results;
     }
 
-    public Employee getEmployee(String id) throws SQLException {
+    public User getEmployee(String id) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from employee where name=?";
 
@@ -86,7 +86,7 @@ public class EmployeeService {
 
             stm.setString(1, id);
             ResultSet rs = stm.executeQuery();
-            Employee c = new Employee(rs.getString("id"),
+            User c = new User(rs.getString("id"),
                         rs.getString("name"),
                         rs.getDate("dateofbirth"),
                         rs.getString("sex"),
@@ -100,7 +100,7 @@ public class EmployeeService {
         }
     }
 
-    public boolean updateEmployee(Employee c) throws SQLException {
+    public boolean updateEmployee(User c) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
             String sql = "Update Employee set name=?,dateofbirth=?,sex=?,phonenumber=?,email=? where id=?  ";

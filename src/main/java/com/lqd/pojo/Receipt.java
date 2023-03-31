@@ -16,25 +16,22 @@ public class Receipt {
     private Date createdDate;
     private float total;
     private String staffID;
-    private String branchID;
     private String customerID;
      {
         id = UUID.randomUUID().toString();
     }
-    public Receipt(Date createdDate, float total, String staffID, String branchID, String customerID) {
+    public Receipt(Date createdDate, float total, String staffID, String customerID) {
 
         this.createdDate = createdDate;
         this.total = total;
         this.staffID = staffID;
-        this.branchID = branchID;
         this.customerID = customerID;
     }
-       public Receipt(String id, Date createdDate, float total, String staffID, String branchID, String customerID) {
+       public Receipt(String id, Date createdDate, float total, String staffID, String customerID) {
         this.id = id;
         this.createdDate = createdDate;
         this.total = total;
         this.staffID = staffID;
-        this.branchID = branchID;
         this.customerID = customerID;
     }
     public String getId() {
@@ -69,13 +66,6 @@ public class Receipt {
         this.staffID = staffID;
     }
 
-    public String getBranchID() {
-        return branchID;
-    }
-
-    public void setBranchID(String branchID) {
-        this.branchID = branchID;
-    }
 
     public String getCustomerID() {
         return customerID;

@@ -21,11 +21,10 @@ public class BranchService {
     public boolean addBranch(Branch b) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            PreparedStatement stm1 = conn.prepareStatement("Insert into branch(id,name,adress,phonenumber)Values(?,?,?,?)");
+            PreparedStatement stm1 = conn.prepareStatement("Insert into branch(id,name,adress)Values(?,?,?)");
             stm1.setString(1, b.getId());
             stm1.setString(2, b.getName());
             stm1.setString(3, b.getAdress());
-            stm1.setString(4, b.getPhoneNumber());
             stm1.executeUpdate();
             try {
                 conn.commit();
@@ -57,8 +56,8 @@ public class BranchService {
             while (rs.next()) {
                 Branch p = new Branch(rs.getString("id"),
                         rs.getString("name"),
-                        rs.getString("adress"),
-                        rs.getString("phonenumber"));
+                        rs.getString("adress"));
+                      
                 results.add(p);
             }
         }
@@ -76,8 +75,7 @@ public class BranchService {
             ResultSet rs = stm.executeQuery();
             Branch b = new Branch(rs.getString("id"),
                     rs.getString("name"),
-                    rs.getString("adress"),
-                    rs.getString("origin"));
+                    rs.getString("adress"));
             return b;
         }
     }
@@ -85,12 +83,11 @@ public class BranchService {
     public boolean updateBranch(Branch p) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            String sql = "Update branch set name=?,adress=?,phonenumber=? where id=?  ";
+            String sql = "Update branch set name=?,adress=?, where id=?  ";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, p.getName());
             stm.setString(2, p.getAdress());
-            stm.setString(3, p.getPhoneNumber());
-            stm.setString(4, p.getId());
+            stm.setString(3, p.getId());
             stm.executeUpdate();
 
             try {
