@@ -11,7 +11,7 @@ import java.util.UUID;
  *
  * @author Gol
  */
-public class Employee {
+public class User {
 
     private String id;
     private String name;
@@ -28,7 +28,7 @@ public class Employee {
         id = UUID.randomUUID().toString();
     }
 
-    public Employee(String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
+    public User(String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
@@ -40,7 +40,7 @@ public class Employee {
         this.branchID = branchID;
     }
 
-    public Employee(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
+    public User(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;

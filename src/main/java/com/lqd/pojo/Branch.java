@@ -14,15 +14,13 @@ public class Branch {
     private String id;
     private String name;
     private String adress;
-    private String phoneNumber;
      {
         id = UUID.randomUUID().toString();
     }
-    public Branch(String id, String name, String adress, String phoneNumber) {
+    public Branch(String id, String name, String adress) {
         this.id=id;
         this.name = name;
         this.adress = adress;
-        this.phoneNumber = phoneNumber;
     }
     
     
@@ -48,14 +46,6 @@ public class Branch {
 
     public void setAdress(String adress) {
         this.adress = adress;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
 

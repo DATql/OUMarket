@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import com.lqd.utils.StringStorage;
 
 /**
  *
@@ -48,7 +47,7 @@ public class ProductService {
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from product";
             if (kw != null && !kw.isEmpty()) {
-                sql += "where name like concat('%',?,'%')";
+                 sql += " WHERE name like concat('%', ?, '%')";
             }
 
             PreparedStatement stm = conn.prepareCall(sql);
