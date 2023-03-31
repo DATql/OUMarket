@@ -32,7 +32,15 @@ public class Product {
         this.origin = origin;
         this.categoryID = categoryID;
     }
-
+    public Product(String name)
+    {
+        this.name=name;
+        this.unit = null;
+        this.price = 0;
+        this.quantity = 0;
+        this.origin = null;
+        this.categoryID = 0;
+    }
     public Product(String id, String name, String unit, float price, int quantity, String origin, int categoryID) {
         this.id = id;
         this.name = name;

@@ -9,6 +9,7 @@ import com.lqd.pojo.Product;
 import com.lqd.services.CategoryService;
 import com.lqd.services.ProductService;
 import com.lqd.utils.MessageBox;
+import com.lqd.utils.StringStorage;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -104,32 +105,6 @@ public class ProductController implements Initializable {
 
     }
 //ĐAng lỗi
-//    public void updateProductHandler(ActionEvent event) throws SQLException {
-//
-//          Category selectedCategory = (Category) cbCategories.getValue();
-//            int categoryId = selectedCategory.getId();
-//                               txtName.setText(txtName.getText());
-//                               System.out.println("Hạt nêm ");
-//            Product prod = p.getProduct("Hạt Nêm K'Norr");
-////            prod.setUnit(txtUnit.getText());
-////            prod.setPrice(Float.parseFloat(txtPrice.getText()));
-////            prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
-////            prod.setOrigin(txtOrigin.getText());
-////            prod.setCategoryID(categoryId);
-////
-////        try {
-////          
-////            if (p.updateProduct(prod)) {
-////
-////                MessageBox.getBox("Sucessful", "Update Product successful", Alert.AlertType.INFORMATION).show();
-////                loadTableData(null);
-////            }
-////        } catch (SQLException ex) {
-////            MessageBox.getBox("Fail", "Update Product failed", Alert.AlertType.ERROR).show();
-////            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
-////        }
-////
-//    }
 
     public void discardChangeHandler(ActionEvent event) {
 
@@ -208,7 +183,27 @@ public class ProductController implements Initializable {
                 cbCategories.getSelectionModel().select(prod.getCategoryID() - 1);
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
+                btnSave.setOnAction(event -> {
+                    Category selectedCategory = (Category) cbCategories.getValue();
+           int categoryId = selectedCategory.getId();
+                    prod.setName(txtName.getText());
+                    prod.setUnit(txtUnit.getText());
+                    prod.setPrice(Float.parseFloat(txtPrice.getText()));
+                    prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
+                    prod.setOrigin(txtOrigin.getText());
+                    prod.setCategoryID(categoryId);
+                    try {
 
+                        if (p.updateProduct(prod)) {
+
+                            MessageBox.getBox("Sucessful", "Update Product successful", Alert.AlertType.INFORMATION).show();
+                            loadTableData(null);
+                        }
+                    } catch (SQLException ex) {
+                        MessageBox.getBox("Fail", "Update Product failed", Alert.AlertType.ERROR).show();
+                        Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
             });
 
             TableCell c = new TableCell();

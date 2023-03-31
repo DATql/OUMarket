@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import com.lqd.utils.StringStorage;
 
 /**
  *
@@ -72,15 +73,14 @@ public class ProductService {
         return results;
     }
 
-    public Product getProduct(String name) throws SQLException {
+    public Product getProduct(StringStorage name) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
 
             String sql = "Select * from product where name=?";
 
             PreparedStatement stm = conn.prepareCall(sql);
 
-             stm.setObject(1, name, Types.NVARCHAR);
-                                                                      System.out.println(stm);
+            stm.setString(1, name.getStr());
 
             ResultSet rs = stm.executeQuery();
             Product p = new Product(rs.getString("id"),
@@ -89,12 +89,14 @@ public class ProductService {
                     rs.getFloat("price"),
                     rs.getInt("quantity"), rs.getString("origin"),
                     rs.getInt("categoryID"));
-          
+
             return p;
         }
     }
 
     public boolean updateProduct(Product p) throws SQLException {
+                    System.out.println("đã chạy vào hàm");
+
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
             String sql = "Update product set name=?,unit=?,price=?,quantity=?,origin=?,categoryID=? where id=?  ";
@@ -107,7 +109,7 @@ public class ProductService {
             stm.setInt(6, p.getCategoryID());
             stm.setString(7, p.getId());
             stm.executeUpdate();
-
+            System.out.println(stm);
             try {
                 conn.commit();
                 return true;

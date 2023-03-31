@@ -80,7 +80,7 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnSave" mnemonicParsing="false" onAction="#updateProductHandler" text="Lưu" visible="false">
+            <Button fx:id="btnSave" mnemonicParsing="false" text="Lưu" visible="false">
                <HBox.margin>
                   <Insets left="60.0" />
                </HBox.margin>
