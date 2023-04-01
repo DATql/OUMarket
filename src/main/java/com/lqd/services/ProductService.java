@@ -94,8 +94,6 @@ public class ProductService {
 //    }
 
     public boolean updateProduct(Product p) throws SQLException {
-                    System.out.println("đã chạy vào hàm");
-
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
             String sql = "Update product set name=?,unit=?,price=?,quantity=?,origin=?,categoryID=? where id=?  ";
@@ -108,7 +106,6 @@ public class ProductService {
             stm.setInt(6, p.getCategoryID());
             stm.setString(7, p.getId());
             stm.executeUpdate();
-            System.out.println(stm);
             try {
                 conn.commit();
                 return true;

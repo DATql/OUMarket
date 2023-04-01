@@ -14,8 +14,12 @@ public class Branch {
     private String id;
     private String name;
     private String adress;
-     {
+    {
         id = UUID.randomUUID().toString();
+    }
+    public Branch(String name, String adress) {
+        this.name = name;
+        this.adress = adress;
     }
     public Branch(String id, String name, String adress) {
         this.id=id;
@@ -46,6 +50,10 @@ public class Branch {
 
     public void setAdress(String adress) {
         this.adress = adress;
+    }
+
+    public String getID() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 

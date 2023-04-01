@@ -79,7 +79,7 @@ public class ProductController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            this.txtSearch.textProperty().addListener(e -> {
+        this.txtSearch.textProperty().addListener(e -> {
             try {
                 this.loadTableData(this.txtSearch.getText());
             } catch (SQLException ex) {
@@ -191,7 +191,7 @@ public class ProductController implements Initializable {
                 btnSave.setVisible(true);
                 btnSave.setOnAction(event -> {
                     Category selectedCategory = (Category) cbCategories.getValue();
-           int categoryId = selectedCategory.getId();
+                    int categoryId = selectedCategory.getId();
                     prod.setName(txtName.getText());
                     prod.setUnit(txtUnit.getText());
                     prod.setPrice(Float.parseFloat(txtPrice.getText()));

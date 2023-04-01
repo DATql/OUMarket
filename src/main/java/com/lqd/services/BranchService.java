@@ -37,12 +37,12 @@ public class BranchService {
 
     }
 
-    public List<Branch> getBranches(String kw) throws SQLException {
+    public List<Branch> getBranchs(String kw) throws SQLException {
         List<Branch> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from branch";
             if (kw != null && !kw.isEmpty()) {
-                sql += "where name like concat('%',?,'%')";
+                sql += " where UPPER(name) like concat('%',UPPER(?),'%')";
             }
 
             PreparedStatement stm = conn.prepareCall(sql);
@@ -65,31 +65,34 @@ public class BranchService {
         return results;
     }
 
-    public Branch getBranch(String id) throws SQLException {
-        try (Connection conn = jdbcService.getConn()) {
-            String sql = "Select * from branch where name=?";
-
-            PreparedStatement stm = conn.prepareCall(sql);
-
-            stm.setString(1, id);
-            ResultSet rs = stm.executeQuery();
-            Branch b = new Branch(rs.getString("id"),
-                    rs.getString("name"),
-                    rs.getString("adress"));
-            return b;
-        }
-    }
+//    public Branch getBranch(String id) throws SQLException {
+//        try (Connection conn = jdbcService.getConn()) {
+//            String sql = "Select * from branch where name=?";
+//
+//            PreparedStatement stm = conn.prepareCall(sql);
+//
+//            stm.setString(1, id);
+//            ResultSet rs = stm.executeQuery();
+//            Branch b = new Branch(rs.getString("id"),
+//                    rs.getString("name"),
+//                    rs.getString("adress"));
+//            return b;
+//        }
+//    }
 
     public boolean updateBranch(Branch p) throws SQLException {
+
         try (Connection conn = jdbcService.getConn()) {
+            
             conn.setAutoCommit(false);
-            String sql = "Update branch set name=?,adress=?, where id=?  ";
-            PreparedStatement stm = conn.prepareCall(sql);
+            
+            String sql = "Update branch set name=?,adress=? where id=?  ";
+            PreparedStatement stm = conn.prepareCall(sql);  
             stm.setString(1, p.getName());
             stm.setString(2, p.getAdress());
             stm.setString(3, p.getId());
             stm.executeUpdate();
-
+            System.out.println(stm);  
             try {
                 conn.commit();
                 return true;
@@ -98,6 +101,7 @@ public class BranchService {
                 return false;
             }
         }
+        
     }
 
     public boolean deleteBranch(String id) throws SQLException {
@@ -109,4 +113,5 @@ public class BranchService {
             return stm.executeUpdate() > 0;
         }
     }
+
 }
