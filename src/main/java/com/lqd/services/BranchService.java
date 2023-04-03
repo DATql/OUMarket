@@ -65,20 +65,21 @@ public class BranchService {
         return results;
     }
 
-//    public Branch getBranch(String id) throws SQLException {
-//        try (Connection conn = jdbcService.getConn()) {
-//            String sql = "Select * from branch where name=?";
-//
-//            PreparedStatement stm = conn.prepareCall(sql);
-//
-//            stm.setString(1, id);
-//            ResultSet rs = stm.executeQuery();
-//            Branch b = new Branch(rs.getString("id"),
-//                    rs.getString("name"),
-//                    rs.getString("adress"));
-//            return b;
-//        }
-//    }
+    public Branch getBranch(String id) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "SELECT * FROM branch WHERE id=?";
+
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Branch b = new Branch(rs.getString("id"), rs.getString("name"), rs.getString("adress"));
+                return b;
+            } else {
+                return null;
+            }
+        }
+    }
 
     public boolean updateBranch(Branch p) throws SQLException {
 

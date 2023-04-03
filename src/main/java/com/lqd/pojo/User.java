@@ -18,6 +18,7 @@ public class User {
     private Date dateOfBirth;
     private String sex;
     private String phoneNumber;
+    private String adress;
     private String role;
     private String email;
     private String username;
@@ -28,11 +29,12 @@ public class User {
         id = UUID.randomUUID().toString();
     }
 
-    public User(String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
+    public User(String name, Date dateOfBirth, String sex, String phoneNumber, String address, String role, String email, String username, String password, String branchID) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.phoneNumber = phoneNumber;
+        this.adress = address;
         this.role = role;
         this.email = email;
         this.username = username;
@@ -40,12 +42,13 @@ public class User {
         this.branchID = branchID;
     }
 
-    public User(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String role, String email, String username, String password, String branchID) {
+    public User(String id, String name, Date dateOfBirth, String sex, String phoneNumber, String address, String role, String email, String username, String password, String branchID) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.phoneNumber = phoneNumber;
+        this.adress = address;
         this.role = role;
         this.email = email;
         this.username = username;
@@ -67,6 +70,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 
     public Date getDateOfBirth() {
@@ -132,5 +142,6 @@ public class User {
     public void setBranchID(String branchID) {
         this.branchID = branchID;
     }
+
 
 }

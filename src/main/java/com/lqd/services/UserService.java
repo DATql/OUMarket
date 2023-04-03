@@ -18,10 +18,10 @@ import java.util.List;
  */
 public class UserService {
 
-    public boolean addEmployee(User e) throws SQLException {
+    public boolean addUser(User e) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            PreparedStatement stm1 = conn.prepareStatement("Insert into employee(id,name,dateofbirth,sex,phonenumber,role,username,password,branchID)Values(?,?,?,?,?,?,?,?,?)");
+            PreparedStatement stm1 = conn.prepareStatement("Insert into user(id,name,dateofbirth,sex,phonenumber,role,username,password,branchID)Values(?,?,?,?,?,?,?,?,?)");
             stm1.setString(1, e.getId());
             stm1.setString(2, e.getName());
             stm1.setDate(3, e.getDateOfBirth());
@@ -44,16 +44,14 @@ public class UserService {
 
     }
 
-    public List<User> getEmployees(String kw) throws SQLException {
+    public List<User> getUsers(String kw) throws SQLException {
         List<User> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
-            String sql = "Select * from employee";
+            String sql = "Select * from user";
             if (kw != null && !kw.isEmpty()) {
-                sql += "where name like concat('%',?,'%')";
+                sql += " where UPPER(name) like concat('%',UPPER(?),'%')";
             }
-
             PreparedStatement stm = conn.prepareCall(sql);
-
             if (kw != null && !kw.isEmpty()) {
                 stm.setString(1, kw);
             }
@@ -65,12 +63,14 @@ public class UserService {
                         rs.getString("name"),
                         rs.getDate("dateofbirth"),
                         rs.getString("sex"),
-                        rs.getString("adress"),
                         rs.getString("phonenumber"),
+                        rs.getString("adress"),
                         rs.getString("role"),
+                        rs.getString("email"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("branchID"));
+                        rs.getString("branchID")
+                );
                 results.add(c);
             }
         }
@@ -78,9 +78,9 @@ public class UserService {
         return results;
     }
 
-    public User getEmployee(String id) throws SQLException {
+    public User getUser(String id) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
-            String sql = "Select * from employee where name=?";
+            String sql = "Select * from user where name=?";
 
             PreparedStatement stm = conn.prepareCall(sql);
 
@@ -90,27 +90,34 @@ public class UserService {
                         rs.getString("name"),
                         rs.getDate("dateofbirth"),
                         rs.getString("sex"),
-                        rs.getString("adress"),
                         rs.getString("phonenumber"),
+                        rs.getString("adress"),
                         rs.getString("role"),
+                        rs.getString("email"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("branchID"));
+                        rs.getString("branchID")
+            );
             return c;
         }
     }
 
-    public boolean updateEmployee(User c) throws SQLException {
+    public boolean updateUser(User c) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            String sql = "Update Employee set name=?,dateofbirth=?,sex=?,phonenumber=?,email=? where id=?  ";
+            String sql = "Update User set name=?, adress=?, dateofbirth=?, sex=?, phonenumber=?, email=?, branchid=?, role=?, username=?, password=?  where id=?  ";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, c.getName());
-            stm.setDate(2, c.getDateOfBirth());
-            stm.setString(3, c.getSex());
-            stm.setString(4, c.getPhoneNumber());
-            stm.setString(5, c.getEmail());
-            stm.setString(6, c.getId());
+            stm.setString(2, c.getAdress());
+            stm.setDate(3, c.getDateOfBirth());
+            stm.setString(4, c.getSex());
+            stm.setString(5, c.getPhoneNumber());
+            stm.setString(6, c.getEmail());
+            stm.setString(7, c.getBranchID());
+            stm.setString(8, c.getRole());
+            stm.setString(9, c.getUsername());
+            stm.setString(10, c.getPassword());
+            stm.setString(11, c.getId());
 
             stm.executeUpdate();
 
@@ -124,9 +131,9 @@ public class UserService {
         }
     }
 
-    public boolean deleteEmployee(String id) throws SQLException {
+    public boolean deleteUser(String id) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
-            String sql = "DELETE FROM Employee WHERE id=?";
+            String sql = "DELETE FROM User WHERE id=?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, id);
 
