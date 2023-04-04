@@ -21,16 +21,18 @@ public class UserService {
     public boolean addUser(User e) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            PreparedStatement stm1 = conn.prepareStatement("Insert into user(id,name,dateofbirth,sex,phonenumber,role,username,password,branchID)Values(?,?,?,?,?,?,?,?,?)");
+            PreparedStatement stm1 = conn.prepareStatement("Insert into user(id,name,dateofbirth,sex,phonenumber,adress,role,email,username,password,branchID)Values(?,?,?,?,?,?,?,?,?,?,?)");
             stm1.setString(1, e.getId());
             stm1.setString(2, e.getName());
             stm1.setDate(3, e.getDateOfBirth());
             stm1.setString(4, e.getSex());
             stm1.setString(5, e.getPhoneNumber());
-            stm1.setString(6, e.getRole());
-            stm1.setString(7, e.getUsername());
-            stm1.setString(8, e.getPassword());
-            stm1.setString(9, e.getBranchID());
+            stm1.setString(6,e.getAdress());
+            stm1.setString(7, e.getRole());
+            stm1.setString(8, e.getEmail());
+            stm1.setString(9, e.getUsername());
+            stm1.setString(10, e.getPassword());
+            stm1.setString(11, e.getBranchID());
 
             stm1.executeUpdate();
             try {

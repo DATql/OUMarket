@@ -147,18 +147,23 @@ public class BranchController implements Initializable {
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
                 btnSave.setOnAction(event -> {
-                    branch.setName(txtName.getText());
-                    branch.setAdress(txtAdress.getText());
-                    try {
-                        if (p.updateBranch(branch)) {
+                    if(txtName.getText().isEmpty() || txtAdress.getText().isEmpty()){
+                        MessageBox.getBox("Thông báo", "Vui lòng nhập đầy đủ thông tin", Alert.AlertType.WARNING).show();
+                    }
+                    else{
+                        branch.setName(txtName.getText());
+                        branch.setAdress(txtAdress.getText());
+                        try {
+                            if (p.updateBranch(branch)) {
 
-                            MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thành công", Alert.AlertType.INFORMATION).show();
-                            loadTableData(null);
-                            loadInterface();
+                                MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thành công", Alert.AlertType.INFORMATION).show();
+                                loadTableData(null);
+                                loadInterface();
+                            }
+                        } catch (SQLException ex) {
+                            MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thất bại", Alert.AlertType.ERROR).show();
+                            Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (SQLException ex) {
-                        MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thất bại", Alert.AlertType.ERROR).show();
-                        Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
             });
@@ -199,23 +204,26 @@ public class BranchController implements Initializable {
         btnSave.setVisible(false);
         btnAdd.setVisible(true);
     }
-    
-    public void addBranchHandler(ActionEvent event) throws SQLException {
-        Branch branch = new Branch(
-                this.txtName.getText(),
-                this.txtAdress.getText()
-        );
-        try {
-            if (p.addBranch(branch)) {
-                MessageBox.getBox("Thông báo", "Thêm chi nhánh mới thành công", Alert.AlertType.INFORMATION).show();
-                loadTableData(null);
-                loadInterface();
-            }
-        } catch (SQLException ex) {
-            MessageBox.getBox("Thông báo", "Thêm chi nhánh mới thất bại", Alert.AlertType.ERROR).show();
-            Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+    public void addBranchHandler(ActionEvent event) throws SQLException {
+        if (txtName.getText() == null || txtName.getText().isEmpty() || txtAdress.getText() == null || txtAdress.getText().isEmpty()) {
+            MessageBox.getBox("Thông báo", "Vui lòng nhập đầy đủ thông tin", Alert.AlertType.WARNING).show();
+        } else {
+            Branch branch = new Branch(
+                    txtName.getText(),
+                    txtAdress.getText()
+            );
+            try {
+                if (p.addBranch(branch)) {
+                    MessageBox.getBox("Thông báo", "Thêm chi nhánh mới thành công", Alert.AlertType.INFORMATION).show();
+                    loadTableData(null);
+                    loadInterface();
+                }
+            } catch (SQLException ex) {
+                MessageBox.getBox("Thông báo", "Thêm chi nhánh mới thất bại", Alert.AlertType.ERROR).show();
+                Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     public void CancelBranchHandler(ActionEvent event) throws SQLException {
         loadTableData(null);

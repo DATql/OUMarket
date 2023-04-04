@@ -139,7 +139,7 @@
                   <Insets left="35.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="btnAdd" mnemonicParsing="false" text="Thêm">
+            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addUserHandler" text="Thêm">
                <HBox.margin>
                   <Insets left="40.0" right="40.0" />
                </HBox.margin>

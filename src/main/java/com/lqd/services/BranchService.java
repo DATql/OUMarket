@@ -81,6 +81,21 @@ public class BranchService {
         }
     }
 
+    public Branch getBranchByName(String name) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "SELECT * FROM branch WHERE name=?";
+
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, name);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Branch b = new Branch(rs.getString("id"), rs.getString("name"), rs.getString("adress"));
+                return b;
+            } else {
+                return null;
+            }
+        }
+    }
     public boolean updateBranch(Branch p) throws SQLException {
 
         try (Connection conn = jdbcService.getConn()) {
@@ -93,7 +108,6 @@ public class BranchService {
             stm.setString(2, p.getAdress());
             stm.setString(3, p.getId());
             stm.executeUpdate();
-            System.out.println(stm);  
             try {
                 conn.commit();
                 return true;

@@ -10,6 +10,7 @@ import com.lqd.pojo.User;
 import com.lqd.services.BranchService;
 import com.lqd.services.UserService;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -18,11 +19,14 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.lqd.utils.HashPassword;
 import com.lqd.utils.MessageBox;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -34,6 +38,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class UserController implements Initializable {
     UserService u = new UserService();
     BranchService p = new BranchService();
+
+    HashPassword hash=new HashPassword();
     /**
      * Initializes the controller class.
      */
@@ -170,7 +176,28 @@ public class UserController implements Initializable {
                 txtAdress.setText(user.getAdress());
                 txtPhoneNumber.setText(user.getPhoneNumber());
                 txtEmail.setText(user.getEmail());
-                cbBranch.getSelectionModel().select(user.getBranchID());
+
+                List<Branch> branches = null;
+                Branch branchName = null;
+                try {
+                    branches = p.getBranchs("");
+                    branchName = p.getBranchByName(user.getBranchID());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (branchName != null) {
+                    this.cbBranch.setItems(FXCollections.observableList(branches));
+                    for (Branch branch : branches) {
+                        if (branch.getId().equals(branchName.getId())) {
+                            this.cbBranch.getSelectionModel().select(branch);
+                            break;
+                        }
+                    }
+                }
+                else{
+                    this.cbBranch.setItems(null);
+                }
 
                 String role = user.getRole().toLowerCase();
                 List<String> roles;
@@ -194,26 +221,80 @@ public class UserController implements Initializable {
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
                 btnSave.setOnAction(event -> {
-                    user.setName(txtName.getText());
-                    user.setAdress(txtAdress.getText());
-                    user.setPhoneNumber(txtPhoneNumber.getText());
-                    user.setEmail(txtEmail.getText());
-                    user.setUsername(txtUserName.getText());
-                    user.setRole(cbRole.getSelectionModel().toString());
-                    Branch selectedBranch = (Branch) cbBranch.getValue();
-                    String branchId = selectedBranch.getId();
-                    user.setBranchID(branchId);
-                    user.setSex(cbSex.getSelectionModel().toString());
-                    System.out.println(user);
-                    try {
-                        if (u.updateUser(user)) {
-                            MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thành công", Alert.AlertType.INFORMATION).show();
-                            loadTableData(null);
-                            loadInterface();
+                    if (cbRole.getSelectionModel().getSelectedItem().toString().toLowerCase().equals("admin")) {
+                        // Nếu người dùng là admin thì chỉ cần nhập thông tin tài khoản và mật khẩu
+                        if (txtUserName.getText().isEmpty() || pwfPassWord.getText().isEmpty() || pwfConfirmPassWord.getText().isEmpty()) {
+                            MessageBox.getBox("Thông báo", "Vui lòng nhập đầy đủ thông tin", Alert.AlertType.WARNING).show();
+                        } else {
+                            String password = pwfPassWord.getText();
+                            String confirmPassword = pwfConfirmPassWord.getText();
+
+                            if ((password != null && password.equals(confirmPassword)) || (password == null && confirmPassword == null)) {
+                                // Mật khẩu trùng khớp, tiến hành mã hóa
+                                if(password!=null){
+                                    String hashedPassword = hash.hashPassword(password);
+                                    user.setPassword(hashedPassword);
+                                }
+
+                                user.setName(txtName.getText());
+
+                                user.setUsername(txtUserName.getText());
+
+                                try {
+                                    if (u.updateUser(user)) {
+                                        MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thành công", Alert.AlertType.INFORMATION).show();
+                                        loadTableData(null);
+                                        loadInterface();
+                                    }
+                                } catch (SQLException ex) {
+                                    MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thất bại", Alert.AlertType.ERROR).show();
+                                    Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                MessageBox.getBox("Thông báo", "Mật khẩu không khớp", Alert.AlertType.ERROR).show();
+                            }
                         }
-                    } catch (SQLException ex) {
-                        MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thất bại", Alert.AlertType.ERROR).show();
-                        Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        // Nếu người dùng không phải là admin thì cần nhập đầy đủ thông tin
+                        String password = pwfPassWord.getText();
+                        String confirmPassword = pwfConfirmPassWord.getText();
+
+                        if ((password != null && password.equals(confirmPassword)) || (password == null && confirmPassword == null)) {
+                            // Mật khẩu trùng khớp, tiến hành mã hóa
+                            if(password!=null){
+                                String hashedPassword = hash.hashPassword(password);
+                                user.setPassword(hashedPassword);
+                            }
+
+                            user.setName(txtName.getText());
+                            user.setAdress(txtAdress.getText());
+                            user.setPhoneNumber(txtPhoneNumber.getText());
+                            user.setEmail(txtEmail.getText());
+                            user.setUsername(txtUserName.getText());
+                            user.setRole(cbRole.getSelectionModel().getSelectedItem().toString());
+
+                            Branch selectedBranch = (Branch) cbBranch.getValue();
+                            if(selectedBranch!=null){
+                                String categoryId = selectedBranch.getId();
+                                user.setBranchID(categoryId);
+                            }
+                            user.setSex(cbSex.getSelectionModel().getSelectedItem().toString());
+                            user.setDateOfBirth(java.sql.Date.valueOf(dpDateOfBirth.getValue()));
+
+                            try {
+                                if (u.updateUser(user)) {
+                                    MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thành công", Alert.AlertType.INFORMATION).show();
+                                    loadTableData(null);
+                                    loadInterface();
+                                }
+                            } catch (SQLException ex) {
+                                MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thất bại", Alert.AlertType.ERROR).show();
+                                Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            MessageBox.getBox("Thông báo", "Mật khẩu không khớp", Alert.AlertType.ERROR).show();
+                        }
+
                     }
                 });
             });
@@ -288,5 +369,47 @@ public class UserController implements Initializable {
     public void CancelUserHandler(ActionEvent event) throws SQLException {
         loadTableData(null);
         loadInterface();
+    }
+    public void addUserHandler(ActionEvent event) throws SQLException {
+        if (txtName.getText() == null || txtName.getText().isEmpty() || txtAdress.getText() == null || txtAdress.getText().isEmpty()|| txtPhoneNumber.getText() == null || txtPhoneNumber.getText().isEmpty()|| txtEmail.getText() == null || txtEmail.getText().isEmpty()|| txtAdress.getText() == null || txtAdress.getText().isEmpty()|| txtUserName.getText() == null || txtUserName.getText().isEmpty()|| pwfPassWord.getText() == null || pwfPassWord.getText().isEmpty() || pwfConfirmPassWord.getText() == null || pwfConfirmPassWord.getText().isEmpty()||dpDateOfBirth.getValue()==null||cbSex.getSelectionModel().getSelectedItem()==null||cbRole.getSelectionModel().getSelectedItem()==null||cbBranch.getSelectionModel().getSelectedItem()==null) {
+            MessageBox.getBox("Thông báo", "Vui lòng nhập đầy đủ thông tin", Alert.AlertType.WARNING).show();
+        } else {
+            String password = pwfPassWord.getText();
+            String confirmPassword = pwfConfirmPassWord.getText();
+
+            if ((password != null && password.equals(confirmPassword)) || (password == null && confirmPassword == null)) {
+                // Mật khẩu trùng khớp, tiến hành mã hóa
+                if (password != null) {
+                    String hashedPassword = hash.hashPassword(password);
+                    Branch selectedBranch = (Branch) cbBranch.getValue();
+                    String categoryId = selectedBranch.getId();
+                    User user = new User(
+                            txtName.getText(),
+                            java.sql.Date.valueOf(dpDateOfBirth.getValue()),
+                            cbSex.getSelectionModel().getSelectedItem().toString(),
+                            txtPhoneNumber.getText(),
+                            txtAdress.getText(),
+                            cbRole.getSelectionModel().getSelectedItem().toString(),
+                            txtEmail.getText(),
+                            txtUserName.getText(),
+                            hashedPassword,
+                            categoryId
+                    );
+                    try {
+                        if (u.addUser(user)) {
+                            MessageBox.getBox("Thông báo", "Thêm người dùng mới thành công", Alert.AlertType.INFORMATION).show();
+                            loadTableData(null);
+                            loadInterface();
+                        }
+                    } catch (SQLException ex) {
+                        MessageBox.getBox("Thông báo", "Thêm người dùng mới thất bại", Alert.AlertType.ERROR).show();
+                        Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }else{
+                MessageBox.getBox("Thông báo", "Mật khẩu không khớp", Alert.AlertType.ERROR).show();
+            }
+
+        }
     }
 }
