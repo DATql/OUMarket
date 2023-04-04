@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -9,73 +10,85 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="728.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox prefHeight="22.0" prefWidth="728.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Chi Nhánh" />
-            <TextField prefHeight="26.0" prefWidth="175.0">
-               <HBox.margin>
-                  <Insets left="40.0" />
-               </HBox.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ">
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </Text>
-            <TextField prefHeight="26.0" prefWidth="175.0">
-               <HBox.margin>
-                  <Insets left="65.0" />
-               </HBox.margin>
-            </TextField>
-         </children>
-         <VBox.margin>
-            <Insets bottom="20.0" left="20.0" top="20.0" />
-         </VBox.margin>
-      </HBox>
-      <HBox prefHeight="22.0" prefWidth="728.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" />
-            <TextField prefHeight="26.0" prefWidth="169.0">
-               <HBox.margin>
-                  <Insets left="45.0" />
-               </HBox.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Quản Lý">
-               <HBox.margin>
-                  <Insets left="35.0" />
-               </HBox.margin>
-            </Text>
-            <ComboBox prefWidth="150.0">
-               <HBox.margin>
-                  <Insets left="40.0" />
-               </HBox.margin>
-            </ComboBox>
-         </children>
-         <VBox.margin>
-            <Insets bottom="20.0" left="20.0" />
-         </VBox.margin>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="22.0" prefWidth="728.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm Sản Phẩm" />
-            <TextField prefHeight="26.0" prefWidth="190.0" />
-            <Button mnemonicParsing="false" text="Thêm">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" text="Lưu">
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets bottom="20.0" left="20.0" />
-         </VBox.margin>
-      </HBox>
-      <TableView prefHeight="372.0" prefWidth="718.0" />
-   </children>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="728.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqd.oumarket.BranchController">
+  <children>
+     <HBox prefHeight="22.0" prefWidth="728.0">
+        <children>
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Chi Nhánh">
+              <HBox.margin>
+                 <Insets />
+              </HBox.margin></Text>
+           <TextField fx:id="txtName" prefHeight="26.0" prefWidth="172.0">
+              <HBox.margin>
+                 <Insets left="40.0" />
+              </HBox.margin>
+           </TextField>
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ">
+              <HBox.margin>
+                 <Insets left="30.0" />
+              </HBox.margin>
+           </Text>
+           <TextField fx:id="txtAdress" prefHeight="26.0" prefWidth="173.0">
+              <HBox.margin>
+                 <Insets left="65.0" />
+              </HBox.margin>
+           </TextField>
+        </children>
+        <VBox.margin>
+           <Insets bottom="20.0" left="20.0" top="20.0" />
+        </VBox.margin>
+     </HBox>
+     <HBox prefHeight="22.0" prefWidth="728.0">
+        <children>
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Quản Lý">
+              <HBox.margin>
+                 <Insets left="35.0" />
+              </HBox.margin>
+           </Text>
+           <ComboBox prefHeight="26.0" prefWidth="150.0">
+              <HBox.margin>
+                 <Insets left="40.0" />
+              </HBox.margin>
+           </ComboBox>
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm chi nhánh">
+              <HBox.margin>
+                 <Insets left="30.0" />
+              </HBox.margin></Text>
+           <TextField fx:id="txtSearch" prefHeight="26.0" prefWidth="190.0">
+              <HBox.margin>
+                 <Insets left="30.0" />
+              </HBox.margin></TextField>
+        </children>
+        <VBox.margin>
+           <Insets bottom="20.0" left="20.0" />
+        </VBox.margin>
+     </HBox>
+     <HBox alignment="CENTER" prefHeight="22.0" prefWidth="728.0">
+        <children>
+           <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addBranchHandler" text="Thêm">
+              <HBox.margin>
+                 <Insets />
+              </HBox.margin>
+           </Button>
+           <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" text="Lưu">
+              <HBox.margin>
+                 <Insets left="30.0" />
+              </HBox.margin>
+           </Button>
+           <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#CancelBranchHandler" prefHeight="26.0" prefWidth="66.0" text="Hủy bỏ">
+              <HBox.margin>
+                 <Insets left="30.0" />
+              </HBox.margin>
+           </Button>
+        </children>
+        <VBox.margin>
+           <Insets bottom="20.0" left="20.0" />
+        </VBox.margin>
+     </HBox>
+     <TableView fx:id="tbBranchs" prefHeight="372.0" prefWidth="718.0" />
+  </children>
 </VBox>
+
+
+
