@@ -42,7 +42,7 @@ public class ProductController implements Initializable {
     static ProductService p = new ProductService();
 
     @FXML
-    TableView<Product> tbProducts;
+     private TableView<Product> tbProducts;
     @FXML
     private ComboBox cbCategories;
     @FXML

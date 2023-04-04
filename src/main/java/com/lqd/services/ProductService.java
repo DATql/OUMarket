@@ -47,9 +47,9 @@ public class ProductService {
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from product";
             if (kw != null && !kw.isEmpty()) {
-                 sql += " WHERE name like concat('%', ?, '%')";
+                sql += " WHERE name like concat('%', ?, '%')";
             }
-
+            sql += " ORDER BY name";
             PreparedStatement stm = conn.prepareCall(sql);
 
             if (kw != null && !kw.isEmpty()) {
@@ -68,33 +68,69 @@ public class ProductService {
                 results.add(p);
             }
         }
-
+        System.out.println(results);
         return results;
     }
 
-//    public Product getProduct(Product p) throws SQLException {
-//        try (Connection conn = jdbcService.getConn()) {
-//
-//            String sql = "Select * from product where name=?";
-//
-//            PreparedStatement stm = conn.prepareCall(sql);
-//
-//            stm.setString(1, name.getStr());
-//
-//            ResultSet rs = stm.executeQuery();
-//            Product p = new Product(rs.getString("id"),
-//                    rs.getString("name"),
-//                    rs.getString("unit"),
-//                    rs.getFloat("price"),
-//                    rs.getInt("quantity"), rs.getString("origin"),
-//                    rs.getInt("categoryID"));
-//
-//            return p;
-//        }
-//    }
+    public Product getProductbyName(String kw) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "Select * from product";
+            if (kw != null && !kw.isEmpty()) {
+                sql += " WHERE name = concat('%', ?, '%')";
+            }
+
+            PreparedStatement stm = conn.prepareCall(sql);
+
+            if (kw != null && !kw.isEmpty()) {
+                stm.setString(1, kw);
+            }
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Product p = new Product(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("unit"),
+                        rs.getFloat("price"),
+                        rs.getInt("quantity"), rs.getString("origin"),
+                        rs.getInt("categoryID"));
+                return p;
+            }
+            return null;
+        }
+    }
+       public Product getProductbyID(String id) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "Select * from product";
+            if (id != null && !id.isEmpty()) {
+                sql += " WHERE name =?";
+            }
+
+            PreparedStatement stm = conn.prepareCall(sql);
+
+            if (id != null && !id.isEmpty()) {
+                stm.setString(1, id);
+            }
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Product p = new Product(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("unit"),
+                        rs.getFloat("price"),
+                        rs.getInt("quantity"), rs.getString("origin"),
+                        rs.getInt("categoryID"));
+                           System.out.println("không ok cho lắm + id");
+
+                return p;
+            }
+                                       System.out.println("không ok cho lắm + id");
+
+            return null;
+        }
+    }
 
     public boolean updateProduct(Product p) throws SQLException {
-                    System.out.println("đã chạy vào hàm");
+        System.out.println("đã chạy vào hàm");
 
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
@@ -128,4 +164,6 @@ public class ProductService {
             return stm.executeUpdate() > 0;
         }
     }
+    
 }
+

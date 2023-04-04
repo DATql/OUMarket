@@ -4,7 +4,6 @@
  */
 package com.lqd.oumarket;
 
-import com.lqd.utils.loadFxml;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

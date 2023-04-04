@@ -26,12 +26,10 @@ CREATE TABLE `branch` (
   `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `adress` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `phonenumber` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
-  UNIQUE KEY `adress_UNIQUE` (`adress`),
-  UNIQUE KEY `phonenumber_UNIQUE` (`phonenumber`)
+  UNIQUE KEY `adress_UNIQUE` (`adress`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vi_0900_as_cs;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -161,7 +159,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES ('62659938-0989-4b13-b7bb-d30b7ba20583','Rau Muống','kg',4000,20,'Vũng Tàu',7),('86c3bbe6-f62d-46f6-a0f8-0dcaa5a0a179','Hạt Nêm K\'Norr','Gói',7000,207,'Việt Nam',2),('c8b88a5c-a103-41eb-a623-fb39688e67f8','Chổi Lông Gà','Cái',30000,35,'Lâm Đồng',3),('e275c05c-0351-4f23-a804-ef40005dcaca','Dầu Ăn Tường An','Chai',25000,250,'Việt Nam',1);
+INSERT INTO `product` VALUES ('aa0649d8-a32e-45eb-b059-4f3a84484352','Bột Giặt Omo','Bịch',7000,2361,'Việt Nam',5),('b1b8c7f2-39e3-4660-8d2d-f1f94fa4269d','Sữa Tươi Vinamilk','Hộp',10000,230,'Việt Nam',8),('d4a9da6b-5010-4e26-8e36-96177aa896bb','Đường Cát Hạ Long','Kg',23000,235,'Việt Nam',2),('e275c05c-0351-4f23-a804-ef40005dcaca','Dầu Ăn Tường An','Chai',25000,250,'Việt Nam',1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,8 +172,8 @@ DROP TABLE IF EXISTS `promotion`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `promotion` (
   `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `fromdate` datetime NOT NULL,
-  `todate` datetime NOT NULL,
+  `fromdate` date NOT NULL,
+  `todate` date NOT NULL,
   `newprice` float NOT NULL,
   `productID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   PRIMARY KEY (`id`),
@@ -191,6 +189,7 @@ CREATE TABLE `promotion` (
 
 LOCK TABLES `promotion` WRITE;
 /*!40000 ALTER TABLE `promotion` DISABLE KEYS */;
+INSERT INTO `promotion` VALUES ('036827bd-c647-422e-a040-2bbb243ee8f1','2023-04-02','2023-04-04',3,'d4a9da6b-5010-4e26-8e36-96177aa896bb');
 /*!40000 ALTER TABLE `promotion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +202,10 @@ DROP TABLE IF EXISTS `receipt`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `receipt` (
   `id` varchar(100) COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
-  `created_date` datetime NOT NULL,
+  `createddate` datetime NOT NULL,
+  `temptotal` float DEFAULT NULL,
+  `promotiontotal` float DEFAULT NULL,
+  `birthtay` float DEFAULT '0.1',
   `total` float NOT NULL,
   `staffID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   `branchID` varchar(100) COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
@@ -267,4 +269,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-29 22:35:44
+-- Dump completed on 2023-04-04 10:29:08

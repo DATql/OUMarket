@@ -17,27 +17,6 @@ public class Promotion {
     private Date fromDate;
     private Date toDate;
     private float newPrice;
-    private String productID;
-
-    {
-        id = UUID.randomUUID().toString();
-    }
-
-    public Promotion(Date fromDate, Date toDate, float newPrice, String productID) {
-
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.newPrice = newPrice;
-        this.productID = productID;
-    }
-
-    public Promotion(String id, Date fromDate, Date toDate, float newPrice, String productID) {
-        this.id = id;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.newPrice = newPrice;
-        this.productID = productID;
-    }
 
     public String getId() {
         return id;
@@ -76,6 +55,27 @@ public class Promotion {
     }
 
     public void setProductID(String productID) {
+        this.productID = productID;
+    }
+    private String productID;
+
+    {
+        id = UUID.randomUUID().toString();
+    }
+
+    public Promotion(Date fromDate, Date toDate, float newPrice, String productID) {
+
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.newPrice = newPrice;
+        this.productID = productID;
+    }
+
+    public Promotion(String id, Date fromDate, Date toDate, float newPrice, String productID) {
+        this.id = id;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.newPrice = newPrice;
         this.productID = productID;
     }
 

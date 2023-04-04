@@ -23,7 +23,10 @@ public class Product {
     {
         id = UUID.randomUUID().toString();
     }
-
+   public Product(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
     public Product(String name, String unit, float price, int quantity, String origin, int categoryID) {
         this.name = name;
         this.unit = unit;
@@ -98,4 +101,10 @@ public class Product {
     public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
     }
+
+    @Override
+    public String toString() {
+        return name; 
+    }
+    
 }
