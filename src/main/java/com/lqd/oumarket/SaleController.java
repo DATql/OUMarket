@@ -4,8 +4,10 @@
  */
 package com.lqd.oumarket;
 
+import com.lqd.pojo.Customer;
 import com.lqd.pojo.Product;
 import com.lqd.pojo.ProductPromotion;
+import com.lqd.services.CustomerService;
 import com.lqd.services.ProductService;
 import com.lqd.services.PromotionService;
 import com.lqd.utils.MessageBox;
@@ -37,11 +39,14 @@ import javafx.scene.text.Text;
  * @author Gol
  */
 public class SaleController implements Initializable {
-
+    @FXML
+    private TableView tbCustomers;
     @FXML
     private TableView tbProducts;
     @FXML
-    private TextField txtSearch;
+    private TextField txtCusSearch;
+     @FXML
+    private TextField txtProdSearch;
     @FXML
     private TableView tbReceipt;
     @FXML
@@ -60,28 +65,68 @@ public class SaleController implements Initializable {
     private float promo;
     private float total;
     private List<ProductPromotion> pplist;
-    static PromotionService p = new PromotionService();
-    static ProductService prod = new ProductService();
-
+    static PromotionService proService = new PromotionService();
+    static ProductService prodService = new ProductService();
+    static CustomerService cusService = new CustomerService();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             loadProductTableColumns();
-            loadTableData(null);
+            loadTableProductData(null);
             loadReceiptColumn();
+            loadCustomerColumns();
+            loadTableCustomerData(null);
         } catch (SQLException ex) {
             Logger.getLogger(SaleController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.txtSearch.textProperty().addListener(e -> {
+        this.txtCusSearch.textProperty().addListener(e -> {
+            this.loadTableCustomerData(this.txtCusSearch.getText());
+        });
+           this.txtProdSearch.textProperty().addListener(e -> {
             try {
-                this.loadTableData(this.txtSearch.getText());
+                this.loadTableProductData(this.txtProdSearch.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(PromotionController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
+    public void loadCustomerColumns(){
+        TableColumn colName = new TableColumn("Name");
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colName.setPrefWidth(120);
 
-    private void loadProductTableColumns() {
+        TableColumn colPhone = new TableColumn("Phone");
+        colPhone.setCellValueFactory(new PropertyValueFactory("phoneNumber"));
+
+        TableColumn colSex = new TableColumn("Sex");
+        colSex.setCellValueFactory(new PropertyValueFactory("sex"));
+
+        TableColumn colBirthDay = new TableColumn("dateOfBirth");
+        colBirthDay.setCellValueFactory(new PropertyValueFactory("dateOfBirth"));
+
+        TableColumn colEmail = new TableColumn("Email");
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+
+        TableColumn colAdd = new TableColumn();
+        colAdd.setCellFactory(r -> {
+            Button btn = new Button("Chọn");
+
+            btn.setOnAction(evt -> {
+                TableCell cell = (TableCell) btn.getParent();
+                Customer customer = (Customer) cell.getTableRow().getItem();
+             
+            });
+
+            TableCell c = new TableCell();
+            c.setGraphic(btn);
+            return c;
+        }
+        );
+
+        this.tbCustomers.getColumns()
+                .addAll(colName, colPhone, colEmail, colBirthDay, colSex, colAdd);
+    }
+    public void loadProductTableColumns() {
         TableColumn colName = new TableColumn("Name");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colName.setPrefWidth(120);
@@ -110,7 +155,7 @@ public class SaleController implements Initializable {
                 Product prod = (Product) cell.getTableRow().getItem();
                 if (tbReceipt.getItems().isEmpty()) {
                     try {
-                        ProductPromotion pp = new ProductPromotion(prod.getId(), prod.getPrice(), prod.getUnit(), (p.getNewPrice(prod.getId()) == null ? prod.getPrice() : p.getNewPrice(prod.getId())), prod.getName());
+                        ProductPromotion pp = new ProductPromotion(prod.getId(), prod.getPrice(), prod.getUnit(), (proService.getNewPrice(prod.getId()) == null ? prod.getPrice() : proService.getNewPrice(prod.getId())), prod.getName());
                         pplist = new ArrayList<>();
                         pplist.add(pp);
                         setReceipt(pplist);
@@ -128,7 +173,7 @@ public class SaleController implements Initializable {
                     }
                     try {
 
-                        ProductPromotion pp = new ProductPromotion(prod.getId(), prod.getPrice(), prod.getUnit(), (p.getNewPrice(prod.getId()) == null ? prod.getPrice() : p.getNewPrice(prod.getId())), prod.getName());
+                        ProductPromotion pp = new ProductPromotion(prod.getId(), prod.getPrice(), prod.getUnit(), (proService.getNewPrice(prod.getId()) == null ? prod.getPrice() : proService.getNewPrice(prod.getId())), prod.getName());
                         tbReceipt.getItems().add(pp);
                         tbReceipt.refresh();
 
@@ -149,15 +194,25 @@ public class SaleController implements Initializable {
                 .addAll(colName, colUnit, colPrice, colQuantity, colOrigin, colCate, colAdd);
     }
 
-    private void loadTableData(String kw) throws SQLException {
+    public void loadTableProductData(String kw) throws SQLException {
 
-        List<Product> ques = prod.getProducts(kw);
+        List<Product> ques = prodService.getProducts(kw);
 
         this.tbProducts.getItems().clear();
         this.tbProducts.setItems(FXCollections.observableList(ques));
     }
+    public void loadTableCustomerData(String kw){
+        
+        try {
+            List<Customer> cus = cusService.getCustomers(null);
+            this.tbCustomers.getItems().clear();
+            this.tbCustomers.setItems(FXCollections.observableList(cus));
 
-    private void loadReceiptColumn() {
+        } catch (SQLException ex) {
+            Logger.getLogger(SaleController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void loadReceiptColumn() {
         TableColumn colName = new TableColumn("Name");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colName.setPrefWidth(100);

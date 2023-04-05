@@ -24,13 +24,13 @@ public class UserService {
    public boolean addUser(User e) throws SQLException {
        try (Connection conn = jdbcService.getConn()) {
            conn.setAutoCommit(false);
-           PreparedStatement stm1 = conn.prepareStatement("Insert into user(id,name,dateofbirth,sex,phonenumber,adress,role,email,username,password,branchID)Values(?,?,?,?,?,?,?,?,?,?,?)");
+           PreparedStatement stm1 = conn.prepareStatement("Insert into user(id,name,dateofbirth,sex,phonenumber,address,role,email,username,password,branchID)Values(?,?,?,?,?,?,?,?,?,?,?)");
            stm1.setString(1, e.getId());
            stm1.setString(2, e.getName());
            stm1.setDate(3, e.getDateOfBirth());
            stm1.setString(4, e.getSex());
            stm1.setString(5, e.getPhoneNumber());
-           stm1.setString(6,e.getAdress());
+           stm1.setString(6,e.getAddress());
            stm1.setString(7, e.getRole());
            stm1.setString(8, e.getEmail());
            stm1.setString(9, e.getUsername());
@@ -74,7 +74,7 @@ public class UserService {
                        rs.getDate("dateofbirth"),
                        rs.getString("sex"),
                        rs.getString("phonenumber"),
-                       rs.getString("adress"),
+                       rs.getString("address"),
                        rs.getString("role"),
                        rs.getString("email"),
                        rs.getString("username"),
@@ -105,7 +105,7 @@ public class UserService {
                        rs.getDate("dateofbirth"),
                        rs.getString("sex"),
                        rs.getString("phonenumber"),
-                       rs.getString("adress"),
+                       rs.getString("address"),
                        rs.getString("role"),
                        rs.getString("email"),
                        rs.getString("username"),
@@ -120,10 +120,10 @@ public class UserService {
    public boolean updateUser(User c) throws SQLException {
        try (Connection conn = jdbcService.getConn()) {
            conn.setAutoCommit(false);
-           String sql = "Update User set name=?, adress=?, dateofbirth=?, sex=?, phonenumber=?, email=?, branchid=?, role=?, username=?, password=?  where id=?  ";
+           String sql = "Update User set name=?, address=?, dateofbirth=?, sex=?, phonenumber=?, email=?, branchid=?, role=?, username=?, password=?  where id=?  ";
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, c.getName());
-           stm.setString(2, c.getAdress());
+           stm.setString(2, c.getAddress());
            stm.setDate(3, c.getDateOfBirth());
            stm.setString(4, c.getSex());
            stm.setString(5, c.getPhoneNumber());

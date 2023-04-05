@@ -21,7 +21,7 @@ public class User {
    private Date dateOfBirth;
    private String sex;
    private String phoneNumber;
-   private String adress;
+   private String address;
    private String role;
    private String email;
    private String username;
@@ -39,7 +39,7 @@ public class User {
        this.dateOfBirth = dateOfBirth;
        this.sex = sex;
        this.phoneNumber = phoneNumber;
-       this.adress = address;
+       this.address = address;
        this.role = role;
        this.email = email;
        this.username = username;
@@ -54,7 +54,7 @@ public class User {
        this.dateOfBirth = dateOfBirth;
        this.sex = sex;
        this.phoneNumber = phoneNumber;
-       this.adress = address;
+       this.address = address;
        this.role = role;
        this.email = email;
        this.username = username;
@@ -81,13 +81,13 @@ public class User {
    public void setName(String name) {
        this.name = name;
    }
-   public String getAdress() {
-       return adress;
+   public String getAddress() {
+       return address;
    }
 
 
-   public void setAdress(String adress) {
-       this.adress = adress;
+   public void setAddress(String Address) {
+       this.address = Address;
    }
 
 
