@@ -14,13 +14,13 @@ public class ProductPromotion {
      private String unit;
      private Float newPrice;
      private String name;
-     private int quantity;
+     private float quantity;
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
      {
