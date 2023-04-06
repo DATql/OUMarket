@@ -16,7 +16,6 @@ public class Product {
     private String name;
     private String unit;
     private float price;
-    private int quantity;
     private String origin;
     private int categoryID;
 
@@ -27,21 +26,19 @@ public class Product {
         this.id = id;
         this.name = name;
     }
-    public Product(String name, String unit, float price, int quantity, String origin, int categoryID) {
+    public Product(String name, String unit, float price, String origin, int categoryID) {
         this.name = name;
         this.unit = unit;
         this.price = price;
-        this.quantity = quantity;
         this.origin = origin;
         this.categoryID = categoryID;
     }
 
-    public Product(String id, String name, String unit, float price, int quantity, String origin, int categoryID) {
+    public Product(String id, String name, String unit, float price, String origin, int categoryID) {
         this.id = id;
         this.name = name;
         this.unit = unit;
         this.price = price;
-        this.quantity = quantity;
         this.origin = origin;
         this.categoryID = categoryID;
     }
@@ -76,14 +73,6 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public String getOrigin() {

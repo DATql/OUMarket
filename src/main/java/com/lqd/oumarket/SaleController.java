@@ -137,9 +137,6 @@ public class SaleController implements Initializable {
         TableColumn colPrice = new TableColumn("Price");
         colPrice.setCellValueFactory(new PropertyValueFactory("price"));
 
-        TableColumn colQuantity = new TableColumn("Quantity");
-        colQuantity.setCellValueFactory(new PropertyValueFactory("quantity"));
-
         TableColumn colOrigin = new TableColumn("Origin");
         colOrigin.setCellValueFactory(new PropertyValueFactory("origin"));
 
@@ -191,7 +188,7 @@ public class SaleController implements Initializable {
         );
 
         this.tbProducts.getColumns()
-                .addAll(colName, colUnit, colPrice, colQuantity, colOrigin, colCate, colAdd);
+                .addAll(colName, colUnit, colPrice, colOrigin, colCate, colAdd);
     }
 
     public void loadTableProductData(String kw) throws SQLException {
@@ -241,18 +238,21 @@ public class SaleController implements Initializable {
                     ProductPromotion prod = (ProductPromotion) cell.getTableRow().getItem();
                     if (cell != null) {
                         int rowIndex = cell.getIndex();
-                        System.out.println(rowIndex);
 
                         if (!txtQuantity.getText().isEmpty()) {
                             try {
-                                prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
+                                if(prod.getUnit().equalsIgnoreCase("kg")) {
+                                    prod.setQuantity(Float.parseFloat(txtQuantity.getText()));
+                                } else {
+                                    prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
+                                }
                                 Label dummyLabel = new Label();
                                 Pane root = (Pane) cell.getScene().getRoot();
                                 root.getChildren().add(dummyLabel);
                                 dummyLabel.requestFocus();
                                 tbReceipt.refresh();
                             } catch (NumberFormatException ex) {
-                                MessageBox.getBox("Error", "Not Integer Number !!", Alert.AlertType.ERROR).show();
+                                MessageBox.getBox("Thông báo", "Sai định lượng sản phẩm!!", Alert.AlertType.ERROR).show();
                                 Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
@@ -275,7 +275,7 @@ public class SaleController implements Initializable {
             btn.setOnAction(evt -> {
                 TableCell cell = (TableCell) btn.getParent();
                 ProductPromotion prod = (ProductPromotion) cell.getTableRow().getItem();
-                System.out.println(prod);
+
                 deleteReceiptItem(prod);
                 List<ProductPromotion> pplist = tbReceipt.getItems();
                 pplist.remove(prod);
@@ -294,20 +294,15 @@ public class SaleController implements Initializable {
         temp = 0;
         promo = 0;
         total = 0;
-        for (int i = 0; i < ppList.size(); i++) {
-            System.out.print(" " + ppList.get(i));
-        }
-        System.out.println(ppList);
 
         for (int i = 0; i < ppList.size(); i++) {
             temp += ppList.get(i).getPrice() * ppList.get(i).getQuantity();
-            System.out.print(" " + ppList.get(i).getPrice());
+
             promo += (ppList.get(i).getPrice() - ppList.get(i).getNewPrice()) * ppList.get(i).getQuantity();
             total = temp - promo;
 
         }
-        System.out.println();
-        System.out.println(temp);
+
         txtTotal.setText(String.valueOf(total));
         txtTemp.setText(String.valueOf(temp));
         txtPromo.setText("- " + promo);

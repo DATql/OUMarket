@@ -95,7 +95,6 @@ public class ProductController implements Initializable {
                 this.txtName.getText(),
                 this.txtUnit.getText(),
                 Float.parseFloat(this.txtPrice.getText()),
-                Integer.parseInt(this.txtQuantity.getText()),
                 this.txtOrigin.getText(),
                 categoryId
         );
@@ -126,9 +125,6 @@ public class ProductController implements Initializable {
 
         TableColumn colPrice = new TableColumn("Price");
         colPrice.setCellValueFactory(new PropertyValueFactory("price"));
-
-        TableColumn colQuantity = new TableColumn("Quantity");
-        colQuantity.setCellValueFactory(new PropertyValueFactory("quantity"));
 
         TableColumn colOrigin = new TableColumn("Origin");
         colOrigin.setCellValueFactory(new PropertyValueFactory("origin"));
@@ -184,7 +180,6 @@ public class ProductController implements Initializable {
                 txtName.setText(prod.getName());
                 txtUnit.setText(prod.getUnit());
                 txtPrice.setText(Float.toString(prod.getPrice()));
-                txtQuantity.setText(Integer.toString(prod.getQuantity()));
                 txtOrigin.setText(prod.getOrigin());
                 cbCategories.getSelectionModel().select(prod.getCategoryID() - 1);
                 btnAdd.setVisible(false);
@@ -195,7 +190,6 @@ public class ProductController implements Initializable {
                     prod.setName(txtName.getText());
                     prod.setUnit(txtUnit.getText());
                     prod.setPrice(Float.parseFloat(txtPrice.getText()));
-                    prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
                     prod.setOrigin(txtOrigin.getText());
                     prod.setCategoryID(categoryId);
                     try {
@@ -216,7 +210,7 @@ public class ProductController implements Initializable {
             c.setGraphic(btn);
             return c;
         });
-        this.tbProducts.getColumns().addAll(colName, colUnit, colPrice, colQuantity, colOrigin, colCate, colDel, colUpdate);
+        this.tbProducts.getColumns().addAll(colName, colUnit, colPrice, colOrigin, colCate, colDel, colUpdate);
     }
 
     private void loadTableData(String kw) throws SQLException {
