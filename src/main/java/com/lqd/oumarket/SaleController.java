@@ -80,6 +80,8 @@ public class SaleController implements Initializable {
     static ReceiptService repService = new ReceiptService();
     static ReceiptDetailService detailService = new ReceiptDetailService();
     private Receipt receipt = new Receipt();
+    private String role = "Nhân Viên";
+    private String staffName = "dat";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -139,7 +141,7 @@ public class SaleController implements Initializable {
 
                 if (compareResult == 0) {
                     txtBirthDay.setText("Giảm 10%");
-                    birthday=(float) 0.1;
+                    birthday = (float) 0.1;
                 } else {
                     txtBirthDay.setText("Không có giảm giá");
                     birthday = 1;
@@ -359,18 +361,17 @@ public class SaleController implements Initializable {
         }
 
     }
-    
-    public void submitReceiptHandler() throws SQLException{
+
+    public void submitReceiptHandler() throws SQLException {
         receipt.setReceipt(birthday, total, promo, total);
-            if(pplist==null)
-            {
-                    MessageBox.getBox("Error", "Receipt Product Detail Is Emty !!!", Alert.AlertType.INFORMATION).show();
-                  return;
-            }
-          try {
-          
+        if (pplist == null) {
+            MessageBox.getBox("Error", "Receipt Product Detail Is Emty !!!", Alert.AlertType.INFORMATION).show();
+            return;
+        }
+        try {
+
             if (repService.addReceipt(receipt)) {
-                for(ProductPromotion pp : pplist){
+                for (ProductPromotion pp : pplist) {
                     detailService.addReceiptDetail(pp, receipt.getId());
                 }
                 MessageBox.getBox("Successful", "Add receipt successful", Alert.AlertType.INFORMATION).show();
@@ -379,6 +380,6 @@ public class SaleController implements Initializable {
             MessageBox.getBox("Failed", "Add receipt failed", Alert.AlertType.ERROR).show();
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
-      
+
     }
 }
