@@ -22,7 +22,7 @@ public class ProductService {
     public boolean addProduct(Product p) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            PreparedStatement stm1 = conn.prepareStatement("Insert into product(id,name,unit,price,,origin,categoryID)Values(?,?,?,?,?,?)");
+            PreparedStatement stm1 = conn.prepareStatement("Insert into product(id,name,unit,price,origin,categoryID)Values(?,?,?,?,?,?)");
             stm1.setString(1, p.getId());
             stm1.setString(2, p.getName());
             stm1.setString(3, p.getUnit());

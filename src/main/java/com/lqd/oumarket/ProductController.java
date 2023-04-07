@@ -74,6 +74,7 @@ public class ProductController implements Initializable {
             this.cbCategories.setItems(FXCollections.observableList(cates));
             loadTableColumns();
             loadTableData(null);
+            cbCategories.getSelectionModel().selectFirst();
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,18 +91,34 @@ public class ProductController implements Initializable {
     public void addProductHandler(ActionEvent event) throws SQLException {
         Category selectedCategory = (Category) cbCategories.getValue();
         int categoryId = selectedCategory.getId();
-        Product prod = new Product(
+        if(txtName.getText().isEmpty()||txtUnit.getText().isEmpty()||txtOrigin.getText().isEmpty()||txtPrice.getText().isEmpty())
+        {
+         
+            MessageBox.getBox("Erorr", "Không được bỏ trống các trường", Alert.AlertType.INFORMATION).show();
+            return;
+        }
+        try {
+            try{
+                  Product prod = new Product(
                 this.txtName.getText(),
                 this.txtUnit.getText(),
+                     
                 Float.parseFloat(this.txtPrice.getText()),
                 this.txtOrigin.getText(),
                 categoryId
+                          
         );
-        try {
-            if (p.addProduct(prod)) {
-                MessageBox.getBox("Question", "Add question successful", Alert.AlertType.INFORMATION).show();
+                   if (p.addProduct(prod)) {
+                MessageBox.getBox("Question", "Add product successful", Alert.AlertType.INFORMATION).show();
                 loadTableData(null);
+                   }
             }
+            catch(NumberFormatException ne){
+                 MessageBox.getBox("Erorr", "  Giá bán phải là số nguyên", Alert.AlertType.INFORMATION).show();
+            }
+               
+           
+            
         } catch (SQLException ex) {
             MessageBox.getBox("Question", "Add question failed", Alert.AlertType.ERROR).show();
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
