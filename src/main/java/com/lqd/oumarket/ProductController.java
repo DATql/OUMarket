@@ -51,8 +51,7 @@ public class ProductController implements Initializable {
     private TextField txtUnit;
     @FXML
     private TextField txtOrigin;
-    @FXML
-    private TextField txtQuantity;
+   
     @FXML
     private TextField txtPrice;
     @FXML

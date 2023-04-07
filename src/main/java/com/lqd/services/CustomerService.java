@@ -19,13 +19,12 @@ import java.util.List;
 public class CustomerService {
 
     public List<Customer> getCustomers(String kw) throws SQLException {
-        List<Customer> results = new ArrayList<>();
+          List<Customer> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from customer";
             if (kw != null && !kw.isEmpty()) {
-                sql += "where phonenumber like concat('%',?,'%')";
+                sql += " WHERE phonenumber like concat('%', ?, '%')";
             }
-
             PreparedStatement stm = conn.prepareCall(sql);
 
             if (kw != null && !kw.isEmpty()) {

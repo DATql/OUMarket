@@ -84,19 +84,25 @@
                         </Text>
                      </children>
                   </HBox>
-                  <TableView fx:id="tbReceipt" prefHeight="241.0" prefWidth="470.0" />
+                  <TableView fx:id="tbReceipt" prefHeight="252.0" prefWidth="470.0" />
                </children>
             </VBox>
             <VBox prefHeight="528.0" prefWidth="234.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hóa Đơn Tạm Tính">
                      <VBox.margin>
-                        <Insets bottom="30.0" left="100.0" />
+                        <Insets bottom="20.0" left="100.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Khách Hàng:" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <VBox.margin>
+                        <Insets top="10.0" />
                      </VBox.margin>
                   </Text>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tạm Tính">
                      <VBox.margin>
-                        <Insets bottom="20.0" left="10.0" />
+                        <Insets bottom="20.0" left="10.0" top="20.0" />
                      </VBox.margin>
                   </Text>
                   <Text fx:id="txtTemp" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -146,7 +152,7 @@
                   </Text>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng Hóa Đơn">
                      <VBox.margin>
-                        <Insets bottom="20.0" left="10.0" />
+                        <Insets bottom="10.0" left="10.0" />
                      </VBox.margin>
                   </Text>
                   <Text fx:id="txtTotal" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -154,7 +160,7 @@
                         <Insets bottom="20.0" left="10.0" />
                      </VBox.margin>
                   </Text>
-                  <Button mnemonicParsing="false" text="Ghi Nhận Thanh Toán">
+                  <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#submitReceiptHandler" text="Ghi Nhận Thanh Toán">
                      <VBox.margin>
                         <Insets left="50.0" />
                      </VBox.margin>

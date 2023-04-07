@@ -7,9 +7,13 @@ package com.lqd.oumarket;
 import com.lqd.pojo.Customer;
 import com.lqd.pojo.Product;
 import com.lqd.pojo.ProductPromotion;
+import com.lqd.pojo.Receipt;
+import com.lqd.pojo.ReceiptDetail;
 import com.lqd.services.CustomerService;
 import com.lqd.services.ProductService;
 import com.lqd.services.PromotionService;
+import com.lqd.services.ReceiptDetailService;
+import com.lqd.services.ReceiptService;
 import com.lqd.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
@@ -32,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import java.util.Date;
 
 /**
  * FXML Controller class
@@ -39,13 +44,16 @@ import javafx.scene.text.Text;
  * @author Gol
  */
 public class SaleController implements Initializable {
+
+    @FXML
+    private Button btnSubmit;
     @FXML
     private TableView tbCustomers;
     @FXML
     private TableView tbProducts;
     @FXML
     private TextField txtCusSearch;
-     @FXML
+    @FXML
     private TextField txtProdSearch;
     @FXML
     private TableView tbReceipt;
@@ -64,13 +72,19 @@ public class SaleController implements Initializable {
     private float temp;
     private float promo;
     private float total;
+    private float birthday = (float) 0.1;
     private List<ProductPromotion> pplist;
     static PromotionService proService = new PromotionService();
     static ProductService prodService = new ProductService();
     static CustomerService cusService = new CustomerService();
+    static ReceiptService repService = new ReceiptService();
+    static ReceiptDetailService detailService = new ReceiptDetailService();
+    private Receipt receipt = new Receipt();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            receipt.setStaffID("64acd540-7c61-4dad-9e8f-6efba1343652");
             loadProductTableColumns();
             loadTableProductData(null);
             loadReceiptColumn();
@@ -80,9 +94,11 @@ public class SaleController implements Initializable {
             Logger.getLogger(SaleController.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.txtCusSearch.textProperty().addListener(e -> {
+
             this.loadTableCustomerData(this.txtCusSearch.getText());
+
         });
-           this.txtProdSearch.textProperty().addListener(e -> {
+        this.txtProdSearch.textProperty().addListener(e -> {
             try {
                 this.loadTableProductData(this.txtProdSearch.getText());
             } catch (SQLException ex) {
@@ -90,14 +106,14 @@ public class SaleController implements Initializable {
             }
         });
     }
-    public void loadCustomerColumns(){
+
+    public void loadCustomerColumns() {
         TableColumn colName = new TableColumn("Name");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colName.setPrefWidth(120);
 
         TableColumn colPhone = new TableColumn("Phone");
         colPhone.setCellValueFactory(new PropertyValueFactory("phoneNumber"));
-
         TableColumn colSex = new TableColumn("Sex");
         colSex.setCellValueFactory(new PropertyValueFactory("sex"));
 
@@ -106,6 +122,7 @@ public class SaleController implements Initializable {
 
         TableColumn colEmail = new TableColumn("Email");
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        colEmail.setPrefWidth(60);
 
         TableColumn colAdd = new TableColumn();
         colAdd.setCellFactory(r -> {
@@ -114,7 +131,19 @@ public class SaleController implements Initializable {
             btn.setOnAction(evt -> {
                 TableCell cell = (TableCell) btn.getParent();
                 Customer customer = (Customer) cell.getTableRow().getItem();
-             
+                receipt.setCustomerID(customer.getId());
+
+                java.time.LocalDate localDate = customer.getDateOfBirth().toLocalDate();
+                java.time.LocalDate now = java.time.LocalDate.now();
+                int compareResult = localDate.compareTo(now);
+
+                if (compareResult == 0) {
+                    txtBirthDay.setText("Giảm 10%");
+                    birthday=(float) 0.1;
+                } else {
+                    txtBirthDay.setText("Không có giảm giá");
+                    birthday = 1;
+                }
             });
 
             TableCell c = new TableCell();
@@ -126,6 +155,7 @@ public class SaleController implements Initializable {
         this.tbCustomers.getColumns()
                 .addAll(colName, colPhone, colEmail, colBirthDay, colSex, colAdd);
     }
+
     public void loadProductTableColumns() {
         TableColumn colName = new TableColumn("Name");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -198,10 +228,11 @@ public class SaleController implements Initializable {
         this.tbProducts.getItems().clear();
         this.tbProducts.setItems(FXCollections.observableList(ques));
     }
-    public void loadTableCustomerData(String kw){
-        
+
+    public void loadTableCustomerData(String kw) {
+
         try {
-            List<Customer> cus = cusService.getCustomers(null);
+            List<Customer> cus = cusService.getCustomers(kw);
             this.tbCustomers.getItems().clear();
             this.tbCustomers.setItems(FXCollections.observableList(cus));
 
@@ -209,6 +240,7 @@ public class SaleController implements Initializable {
             Logger.getLogger(SaleController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public void loadReceiptColumn() {
         TableColumn colName = new TableColumn("Name");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -241,7 +273,7 @@ public class SaleController implements Initializable {
 
                         if (!txtQuantity.getText().isEmpty()) {
                             try {
-                                if(prod.getUnit().equalsIgnoreCase("kg")) {
+                                if (prod.getUnit().equalsIgnoreCase("kg")) {
                                     prod.setQuantity(Float.parseFloat(txtQuantity.getText()));
                                 } else {
                                     prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
@@ -327,5 +359,26 @@ public class SaleController implements Initializable {
         }
 
     }
-
+    
+    public void submitReceiptHandler() throws SQLException{
+        receipt.setReceipt(birthday, total, promo, total);
+            if(pplist==null)
+            {
+                    MessageBox.getBox("Error", "Receipt Product Detail Is Emty !!!", Alert.AlertType.INFORMATION).show();
+                  return;
+            }
+          try {
+          
+            if (repService.addReceipt(receipt)) {
+                for(ProductPromotion pp : pplist){
+                    detailService.addReceiptDetail(pp, receipt.getId());
+                }
+                MessageBox.getBox("Successful", "Add receipt successful", Alert.AlertType.INFORMATION).show();
+            }
+        } catch (SQLException ex) {
+            MessageBox.getBox("Failed", "Add receipt failed", Alert.AlertType.ERROR).show();
+            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }
 }

@@ -93,6 +93,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES ('1','Quang Đạt','2002-10-07 00:00:00','Nam','01232459754','dat@gmail.com'),('2','Hoàng','2002-03-02 00:00:00','Nam','01232356423','hoang@gmail.com'),('3','Dũ','2002-12-31 00:00:00','Nam','01234534122','du@gmail.com'),('4','Hiếu','2002-04-07 00:00:00','Nam','01234335443','hieu@gmail.com');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +171,7 @@ CREATE TABLE `receipt` (
   `createddate` datetime NOT NULL,
   `temptotal` float DEFAULT NULL,
   `promotiontotal` float DEFAULT NULL,
-  `birthtay` float DEFAULT '0.1',
+  `birthday` bit(1) DEFAULT b'0',
   `total` float NOT NULL,
   `staffID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
   `customerID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
@@ -189,6 +190,7 @@ CREATE TABLE `receipt` (
 
 LOCK TABLES `receipt` WRITE;
 /*!40000 ALTER TABLE `receipt` DISABLE KEYS */;
+INSERT INTO `receipt` VALUES ('9b8206b4-7f5b-4262-9d59-baa021ceb8bb','2023-04-07 00:00:00',7000,0,_binary '',7000,'64acd540-7c61-4dad-9e8f-6efba1343652','1'),('cb5dd8e2-f44e-4b96-aee0-007482cf2bd3','2023-04-07 00:00:00',7000,0,_binary '',7000,'64acd540-7c61-4dad-9e8f-6efba1343652','1'),('d792dbe4-5931-4378-939b-89ab6bf39cb5','2023-04-07 00:00:00',0,0,_binary '',0,'64acd540-7c61-4dad-9e8f-6efba1343652','1');
 /*!40000 ALTER TABLE `receipt` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,12 +202,10 @@ DROP TABLE IF EXISTS `receipt_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `receipt_detail` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
   `quantity` int NOT NULL,
-  `productID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
-  `receiptID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
+  `productID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  `receiptID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_vi_0900_as_cs NOT NULL,
+  PRIMARY KEY (`productID`,`receiptID`),
   KEY `fk_receiptdetail_detail_idx` (`receiptID`),
   KEY `fk_receiptdetail_product_idx` (`productID`),
   CONSTRAINT `fk_receiptdetail_detail` FOREIGN KEY (`receiptID`) REFERENCES `receipt` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -219,6 +219,7 @@ CREATE TABLE `receipt_detail` (
 
 LOCK TABLES `receipt_detail` WRITE;
 /*!40000 ALTER TABLE `receipt_detail` DISABLE KEYS */;
+INSERT INTO `receipt_detail` VALUES (1,'aa0649d8-a32e-45eb-b059-4f3a84484352','cb5dd8e2-f44e-4b96-aee0-007482cf2bd3');
 /*!40000 ALTER TABLE `receipt_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,4 +269,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-05 20:56:12
+-- Dump completed on 2023-04-07  9:12:55
