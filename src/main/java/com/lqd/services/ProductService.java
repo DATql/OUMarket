@@ -99,7 +99,7 @@ public class ProductService {
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from product";
             if (id != null && !id.isEmpty()) {
-                sql += " WHERE name =?";
+                sql += " WHERE id =?";
             }
 
             PreparedStatement stm = conn.prepareCall(sql);

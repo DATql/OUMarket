@@ -4,6 +4,7 @@
  */
 package com.lqd.oumarket;
 
+import com.lqd.pojo.Branch;
 import com.lqd.pojo.Product;
 import com.lqd.pojo.Promotion;
 import com.lqd.services.ProductService;
@@ -11,6 +12,7 @@ import com.lqd.services.PromotionService;
 import com.lqd.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -56,19 +58,27 @@ public class PromotionController implements Initializable {
     @FXML
     private Button btnSave;
     @FXML
-    private Button btnDiscard;
+    private Button btnCancel;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             loadTableColumns();
             loadTableData();
-            cbProducts.getSelectionModel().clearSelection();
-            cbProducts.setItems(FXCollections.observableArrayList(prod.getProducts(null)));
-
+            resetUI();
         } catch (SQLException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    private void resetUI() throws SQLException {
+        cbProducts.getSelectionModel().clearSelection();
+        cbProducts.setItems(FXCollections.observableArrayList(prod.getProducts(null)));
+        cbProducts.getSelectionModel().clearSelection();
+        btnAdd.setVisible(true);
+        btnSave.setVisible(false);
+        dpFromDate.setValue(null);
+        dpToDate.setValue(null);
+        txtNewPrice.setText("");
     }
 
     public void addPromotionHandler(ActionEvent event) throws SQLException {
@@ -82,43 +92,63 @@ public class PromotionController implements Initializable {
 
         try {
             if (p.addPromotion(promotion)) {
-                MessageBox.getBox("Question", "Add question successful", Alert.AlertType.INFORMATION).show();
+                MessageBox.getBox("Thông báo", "Thêm thành công", Alert.AlertType.INFORMATION).show();
                 loadTableData();
+                resetUI();
             }
         } catch (SQLException ex) {
-            MessageBox.getBox("Question", "Add question failed", Alert.AlertType.ERROR).show();
+            MessageBox.getBox("Thông báo", "Thêm thất bại", Alert.AlertType.ERROR).show();
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void discardSaveHandler(ActionEvent event) {
-        btnAdd.setVisible(true);
-        btnSave.setVisible(false);
-        dpFromDate.setValue(null);
-        dpToDate.setValue(null);
-        txtNewPrice.setText("");
+    public void discardSaveHandler(ActionEvent event) throws SQLException {
+        loadTableData();
+        resetUI();
     }
+
 
     public void loadTableColumns() {
 
-        TableColumn colFromDate = new TableColumn("From Date");
-        colFromDate.setCellValueFactory(new PropertyValueFactory("fromDate"));
-
-        TableColumn colToDate = new TableColumn("To Date");
-        colToDate.setCellValueFactory(new PropertyValueFactory("toDate"));
-
-        TableColumn colNewPrice = new TableColumn("New Price");
-        colNewPrice.setCellValueFactory(new PropertyValueFactory("newPrice"));
-
-        TableColumn colProductId = new TableColumn("productID");
+        TableColumn colProductId = new TableColumn("Sản phẩm");
         colProductId.setCellValueFactory(new PropertyValueFactory("productID"));
+        colProductId.setPrefWidth(200);
+
+        TableColumn<Promotion, Float> colNewPrice = new TableColumn<>("Giá khuyến mãi");
+        colNewPrice.setCellValueFactory(new PropertyValueFactory<>("newPrice"));
+        colNewPrice.setCellFactory(column -> {
+            TableCell<Promotion, Float> cell = new TableCell<Promotion, Float>() {
+                @Override
+                protected void updateItem(Float item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        String formattedPrice = String.format("%,.0f VNĐ", item);
+                        setText(formattedPrice);
+                    }
+                }
+            };
+            return cell;
+        });
+        colNewPrice.setPrefWidth(120);
+
+        TableColumn colFromDate = new TableColumn("Từ ngày");
+        colFromDate.setCellValueFactory(new PropertyValueFactory("fromDate"));
+        colFromDate.setPrefWidth(150);
+
+        TableColumn colToDate = new TableColumn("Đến ngày");
+        colToDate.setCellValueFactory(new PropertyValueFactory("toDate"));
+        colToDate.setPrefWidth(150);
+
         TableColumn colDel = new TableColumn();
         colDel.setCellFactory(r -> {
-            Button btn = new Button("Delete");
+            Button btn = new Button("Xóa");
 
             btn.setOnAction(evt -> {
-                Alert a = MessageBox.getBox("Question",
-                        "Are you sure to delete this promotion?",
+                Alert a = MessageBox.getBox("Thông báo",
+                        "Bạn có muốn xóa khuyến mãi này?",
                         Alert.AlertType.CONFIRMATION);
                 a.showAndWait().ifPresent(res -> {
                     if (res == ButtonType.OK) {
@@ -127,15 +157,15 @@ public class PromotionController implements Initializable {
                         Promotion prod = (Promotion) cell.getTableRow().getItem();
                         try {
                             if ((p.deletePromotion(prod.getId()))) {
-                                MessageBox.getBox("Promotion", "Delete successful", Alert.AlertType.INFORMATION).show();
+                                MessageBox.getBox("Khuyến mãi", "Xóa thành công", Alert.AlertType.INFORMATION).show();
                                 this.loadTableData();
-
+                                this.resetUI();
                             } else {
-                                MessageBox.getBox("Promotion", "Delete failed", Alert.AlertType.WARNING).show();
+                                MessageBox.getBox("Khuyến mãi", "Xóa thất bại", Alert.AlertType.WARNING).show();
                             }
 
                         } catch (SQLException ex) {
-                            MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                            MessageBox.getBox("Thông báo", ex.getMessage(), Alert.AlertType.WARNING).show();
                             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
@@ -144,29 +174,37 @@ public class PromotionController implements Initializable {
 
             });
 
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
+            TableCell<Promotion, Void> c = new TableCell<>() {
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        Promotion promotion = getTableView().getItems().get(getIndex());
+                        setGraphic(promotion.getId() != null && !promotion.getId().isEmpty() ? btn : null);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
             return c;
         });
         TableColumn colUpdate = new TableColumn();
         colUpdate.setCellFactory(r -> {
-            Button btn = new Button("Update");
+            Button btn = new Button("Sửa");
 
             btn.setOnAction(evt -> {
 
                 TableRow<Product> row = (TableRow<Product>) ((Button) evt.getSource()).getParent().getParent();
                 int rowIndex = row.getIndex();
                 Promotion promotion = tbPromotions.getItems().get(rowIndex);
-                System.out.println(promotion.getId());
-                System.out.println(promotion.getFromDate());
                 ObservableList<Product> items = cbProducts.getItems();
-                for (Product p : items) {
-                    if (p.getId().equals(promotion.getProductID())) {
-                        cbProducts.setValue(p);
+                cbProducts.setItems(items);
+                for (Product prod : items) {
+                    if (prod.getName().equals(promotion.getProductID())) {
+                        this.cbProducts.getSelectionModel().select(prod);
                         break;
                     }
                 }
-                cbProducts.setItems(items);
+
 
                 txtNewPrice.setText(Float.toString(promotion.getNewPrice()));
 
@@ -174,7 +212,6 @@ public class PromotionController implements Initializable {
                 dpToDate.setValue(promotion.getToDate().toLocalDate());
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
-                btnDiscard.setVisible(true);
                 btnSave.setOnAction(event -> {
                     Product selectedProduct = (Product) cbProducts.getSelectionModel().getSelectedItem();
                     String id = selectedProduct.getId();
@@ -185,33 +222,43 @@ public class PromotionController implements Initializable {
                     try {
 
                         if (p.updatePromotion(promotion)) {
-
-                            MessageBox.getBox("Sucessful", "Update Product successful", Alert.AlertType.INFORMATION).show();
+                            MessageBox.getBox("Thành công", "Chỉnh sửa thành công", Alert.AlertType.INFORMATION).show();
                             loadTableData();
-                            btnDiscard.setVisible(false);
-                            btnAdd.setVisible(true);
-                            btnSave.setVisible(false);;
+                            resetUI();
                         }
                     } catch (SQLException ex) {
-                        btnDiscard.setVisible(false);
                         btnAdd.setVisible(true);
                         btnSave.setVisible(false);
-                        MessageBox.getBox("Fail", "Update Product failed", Alert.AlertType.ERROR).show();
+                        MessageBox.getBox("Thất bại", "Chỉnh sửa thất bại", Alert.AlertType.ERROR).show();
                         Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
             });
-
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
+            TableCell<Promotion, Void> c = new TableCell<>() {
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        Promotion promotion = getTableView().getItems().get(getIndex());
+                        setGraphic(promotion.getId() != null && !promotion.getId().isEmpty() ? btn : null);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
             return c;
         });
-        this.tbPromotions.getColumns().addAll(colFromDate, colToDate, colNewPrice, colProductId, colDel, colUpdate);
+        this.tbPromotions.getColumns().addAll(colProductId, colNewPrice, colFromDate, colToDate, colDel, colUpdate);
     }
 
-    private void loadTableData() throws SQLException {
-        List<Promotion> promo = p.getPromotion();
 
-        this.tbPromotions.setItems(FXCollections.observableList(promo));
+    private void loadTableData() throws SQLException {
+        List<Promotion> promos = p.getPromotion();
+        this.tbPromotions.getItems().clear();
+        for (Promotion promo : promos) {
+            String productID = promo.getProductID();
+            Product product = prod.getProductbyID(productID);
+            promo.setProductID(product != null ? product.getName() : "");
+        }
+        this.tbPromotions.setItems(FXCollections.observableList(promos));
     }
 }

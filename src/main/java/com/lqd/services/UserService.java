@@ -52,18 +52,33 @@ public class UserService {
    }
 
 
-   public List<User> getUsers(String kw) throws SQLException {
+   public List<User> getUsers(String kw, String branchId) throws SQLException {
        List<User> results = new ArrayList<>();
        try (Connection conn = jdbcService.getConn()) {
            String sql = "Select * from user";
            if (kw != null && !kw.isEmpty()) {
-               sql += " where UPPER(name) like concat('%',UPPER(?),'%')";
+               sql += " where  UPPER(name) like concat('%',UPPER(?),'%')";
+           }
+           if(branchId!=null&&!branchId.isEmpty()){
+               if(kw != null && !kw.isEmpty()){
+                   sql+=" and branchID=?";
+               }
+               else{
+                   sql+=" where branchID=?";
+               }
            }
            PreparedStatement stm = conn.prepareCall(sql);
            if (kw != null && !kw.isEmpty()) {
                stm.setString(1, kw);
            }
-
+           if(branchId!=null&&!branchId.isEmpty()){
+               if(kw != null && !kw.isEmpty()) {
+                   stm.setString(2, branchId);
+               }
+               else{
+                   stm.setString(1, branchId);
+               }
+           }
 
            ResultSet rs = stm.executeQuery();
 
@@ -88,7 +103,6 @@ public class UserService {
 
        return results;
    }
-
 
    public User getUser(String id) throws SQLException {
        try (Connection conn = jdbcService.getConn()) {
@@ -159,5 +173,36 @@ public class UserService {
            return stm.executeUpdate() > 0;
        }
    }
+
+    public User checkUser(String username, String password) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "Select * from user where username=? and password = ?";
+
+            PreparedStatement stm = conn.prepareCall(sql);
+
+            stm.setString(1, username);
+            stm.setString(2, password);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                User c = new User(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getDate("dateofbirth"),
+                        rs.getString("sex"),
+                        rs.getString("phonenumber"),
+                        rs.getString("address"),
+                        rs.getString("role"),
+                        rs.getString("email"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("branchID")
+                );
+                return c;
+            }
+        }
+        return null;
+    }
+
+
+
 }
 
