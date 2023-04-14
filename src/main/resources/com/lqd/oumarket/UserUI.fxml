@@ -186,9 +186,9 @@
       </Label>
    </top>
    <bottom>
-      <BorderPane prefHeight="340.0" prefWidth="700.0" style="-fx-border-color: #4e73df; -fx-border-width: 2px 0 0 0;" BorderPane.alignment="CENTER">
+      <BorderPane prefHeight="370.0" prefWidth="700.0" style="-fx-border-color: #4e73df; -fx-border-width: 2px 0 0 0;" BorderPane.alignment="CENTER">
          <bottom>
-            <TableView prefHeight="248.0" prefWidth="711.0" BorderPane.alignment="CENTER" />
+            <TableView prefHeight="270.0" prefWidth="700.0" BorderPane.alignment="CENTER" />
          </bottom>
          <top>
             <AnchorPane prefHeight="30.0" prefWidth="700.0" BorderPane.alignment="CENTER">

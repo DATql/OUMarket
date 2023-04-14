@@ -188,11 +188,7 @@ public class BranchController implements Initializable {
 
 
    private void loadTableData(String kw) throws SQLException {
-
-
        List<Branch> branch = p.getBranchs(kw);
-
-
        this.tbBranchs.getItems().clear();
        this.tbBranchs.setItems(FXCollections.observableList(branch));
    }

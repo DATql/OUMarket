@@ -352,20 +352,10 @@ public class UserController implements Initializable {
         }
         if(u.getRole().toLowerCase().equals("admin")){
 
-            List<String> roles = Arrays.asList("Quản lý", "Nhân viên");
+            List<String> roles = Arrays.asList("Nhân viên");
             this.cbRole.setItems(FXCollections.observableList(roles));
             cbBranch.setDisable(false);
         }
-        if(u.getRole().toLowerCase().equals("quản lý")){
-
-            this.cbBranch.setDisable(true);
-            this.cbBranch.getSelectionModel().select(p.getBranch(u.getBranchID()));
-
-            List<String> roles = Arrays.asList("Nhân viên");
-            this.cbRole.setItems(FXCollections.observableList(roles));
-            this.cbRole.getSelectionModel().select("Nhân viện");
-        }
-
 
         List<String> sex = Arrays.asList("Nam", "Nữ", "Khác");
         this.cbSex.setItems(FXCollections.observableList(sex));

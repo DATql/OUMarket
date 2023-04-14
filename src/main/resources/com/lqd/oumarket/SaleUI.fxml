@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqd.oumarket.SaleController">
    <left>
       <VBox prefHeight="690.0" prefWidth="385.0" BorderPane.alignment="CENTER">
          <children>
@@ -44,12 +44,12 @@
                                           <Insets left="20.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="txtCusSearch">
                                        <GridPane.margin>
                                           <Insets left="135.0" right="20.0" />
                                        </GridPane.margin>
                                     </TextField>
-                                    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                    <TableView fx:id="tbCustomers" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
@@ -77,12 +77,12 @@
                                           <Insets left="20.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="txtProdSearch">
                                        <GridPane.margin>
                                           <Insets left="135.0" right="20.0" />
                                        </GridPane.margin>
                                     </TextField>
-                                    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                    <TableView fx:id="tbProducts" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
@@ -101,7 +101,7 @@
                         <Insets bottom="10.0" left="85.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="376.0" prefWidth="385.0" />
+                  <TableView fx:id="tbReceipt" prefHeight="376.0" prefWidth="385.0" />
                </children>
             </VBox>
          </children>
@@ -140,7 +140,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #4e73df;" text="Ghi nhận thanh toán" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                  <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#submitReceiptHandler" style="-fx-background-color: red;" text="Ghi nhận thanh toán" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -151,7 +151,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phạm Tấn Hoàng" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Text fx:id="txtCus" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="100.0" />
                      </GridPane.margin>
@@ -161,45 +161,59 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="100,000,000 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Text fx:id="txtTemp" strokeType="OUTSIDE" strokeWidth="0.0" text="0 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="100.0" />
                      </GridPane.margin>
                   </Text>
                   <Label text="Khuyến mãi:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="100,000,000 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Text fx:id="txtPromo" strokeType="OUTSIDE" strokeWidth="0.0" text="0 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="100.0" />
                      </GridPane.margin>
                   </Text>
-                  <Label text="Giảm giá sinh nhật" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <Label text="Giảm giá sinh nhật:" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15%" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <Text fx:id="txtBirthDay" strokeType="OUTSIDE" strokeWidth="0.0" text="0%" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
-                        <Insets left="150.0" />
+                        <Insets left="135.0" />
                      </GridPane.margin>
                   </Text>
-                  <Label text="Tổng hóa đơn:" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="100,000,000 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <Label text="Tổng hóa đơn:" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font></Label>
+                  <Text fx:id="txtTotal" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="0 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <GridPane.margin>
-                        <Insets left="110.0" />
+                        <Insets left="115.0" />
                      </GridPane.margin>
                   </Text>
-                  <Label text="Đã nhận:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="6">
+                  <Label text="Đã nhận:" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin></Label>
+                  <TextField fx:id="txtReceive" GridPane.columnIndex="1" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets left="100.0" right="30.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label text="Tiền thừa:" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="100,000,000 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                  <Label text="Tiền thừa:" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin></Label>
+                  <Text fx:id="txtChanges" strokeType="OUTSIDE" strokeWidth="0.0" text="0 VNĐ" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets left="100.0" />
                      </GridPane.margin>
                   </Text>
+                  <Button mnemonicParsing="false" style="-fx-background-color: #4e73df;" text="Hủy bỏ" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="200.0" />
+                     </GridPane.margin>
+                  </Button>
                </children>
             </GridPane>
          </children>

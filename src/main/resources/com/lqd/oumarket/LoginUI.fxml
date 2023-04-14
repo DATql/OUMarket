@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +16,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqd.oumarket.LoginController">
    <left>
       <AnchorPane prefHeight="450.0" prefWidth="350.0" style="-fx-background-color: #4e73df;" BorderPane.alignment="CENTER">
          <children>
@@ -41,14 +41,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <PasswordField layoutX="10.0" layoutY="163.0" promptText="Mật khẩu" style="-fx-background-color: tranparent; -fx-border-color: #4e73df; -fx-border-width: 0 0 2px 0;" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="80.0" right="50.0" />
-               </GridPane.margin>
-            </PasswordField>
             <FontAwesomeIconView fill="#4e73df" glyphName="USER" size="23" text="" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets left="45.0" top="20.0" />
+                  <Insets left="45.0" />
                </GridPane.margin>
             </FontAwesomeIconView>
             <FontAwesomeIconView fill="#4e73df" glyphName="KEY" size="23" text="" GridPane.rowIndex="2">
@@ -56,22 +51,6 @@
                   <Insets left="45.0" />
                </GridPane.margin>
             </FontAwesomeIconView>
-            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4e73df; -fx-border-radius: 10;" text="Đăng nhập" textFill="WHITE" GridPane.rowIndex="3">
-               <font>
-                  <Font size="17.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets bottom="30.0" left="100.0" right="100.0" />
-               </GridPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <TextField promptText="Tên đăng nhập..." style="-fx-background-color: tranparent; -fx-border-color: #4e73df; -fx-border-width: 0 0 2px 0;" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="80.0" right="50.0" top="20.0" />
-               </GridPane.margin>
-            </TextField>
             <FontAwesomeIconView fill="#4e73df" glyphName="USERS" size="45" text="">
                <GridPane.margin>
                   <Insets bottom="30.0" left="150.0" right="150.0" />
@@ -93,6 +72,27 @@
                   </LinearGradient>
                </textFill>
             </Label>
+            <JFXButton buttonType="RAISED" defaultButton="true" onAction="#switchToMainUI" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4e73df;" text="Đăng nhập" textFill="WHITE" GridPane.rowIndex="3">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="30.0" left="100.0" right="100.0" />
+               </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <PasswordField fx:id="txtPassword" promptText="Mật khẩu" style="-fx-background-color: white; -fx-border-color: #4e73df; -fx-border-width: 0 0 2px 0;" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="80.0" right="50.0" />
+               </GridPane.margin>
+            </PasswordField>
+            <TextField fx:id="txtUsername" promptText="Tên đăng nhâp" style="-fx-background-color: white; -fx-border-width: 0 0 2px 0; -fx-border-color: #4e73df;" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="80.0" right="50.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
    </center>

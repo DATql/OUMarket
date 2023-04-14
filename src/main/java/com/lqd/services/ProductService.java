@@ -28,7 +28,7 @@ public class ProductService {
             stm1.setString(3, p.getUnit());
             stm1.setFloat(4, p.getPrice());
             stm1.setString(5, p.getOrigin());
-            stm1.setInt(6, p.getCategoryID());
+            stm1.setString(6, p.getCategoryID());
             stm1.executeUpdate();
             try {
                 conn.commit();
@@ -46,7 +46,7 @@ public class ProductService {
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from product";
             if (kw != null && !kw.isEmpty()) {
-                sql += " WHERE name like concat('%', ?, '%')";
+                sql += " where UPPER(name) like concat('%',UPPER(?),'%')";
             }
             sql += " ORDER BY name";
             PreparedStatement stm = conn.prepareCall(sql);
@@ -63,7 +63,7 @@ public class ProductService {
                         rs.getString("unit"),
                         rs.getFloat("price"),
                         rs.getString("origin"),
-                        rs.getInt("categoryID"));
+                        rs.getString("categoryID"));
                 results.add(p);
             }
         }
@@ -89,7 +89,7 @@ public class ProductService {
                         rs.getString("unit"),
                         rs.getFloat("price"),
                         rs.getString("origin"),
-                        rs.getInt("categoryID"));
+                        rs.getString("categoryID"));
                 return p;
             }
             return null;
@@ -115,7 +115,7 @@ public class ProductService {
                         rs.getString("unit"),
                         rs.getFloat("price"),
                         rs.getString("origin"),
-                        rs.getInt("categoryID"));
+                        rs.getString("categoryID"));
 
                 return p;
             }
@@ -134,7 +134,7 @@ public class ProductService {
             stm.setString(2, p.getUnit());
             stm.setFloat(3, p.getPrice());
             stm.setString(4, p.getOrigin());
-            stm.setInt(5, p.getCategoryID());
+            stm.setString(5, p.getCategoryID());
             stm.setString(6, p.getId());
             stm.executeUpdate();
             try {

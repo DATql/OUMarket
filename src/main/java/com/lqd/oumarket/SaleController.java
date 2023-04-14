@@ -4,16 +4,8 @@
  */
 package com.lqd.oumarket;
 
-import com.lqd.pojo.Customer;
-import com.lqd.pojo.Product;
-import com.lqd.pojo.ProductPromotion;
-import com.lqd.pojo.Receipt;
-import com.lqd.pojo.ReceiptDetail;
-import com.lqd.services.CustomerService;
-import com.lqd.services.ProductService;
-import com.lqd.services.PromotionService;
-import com.lqd.services.ReceiptDetailService;
-import com.lqd.services.ReceiptService;
+import com.lqd.pojo.*;
+import com.lqd.services.*;
 import com.lqd.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
@@ -60,6 +52,8 @@ public class SaleController implements Initializable {
     @FXML
     private TextField txtReceive;
     @FXML
+    private Text txtCus;
+    @FXML
     private Text txtTemp;
     @FXML
     private Text txtPromo;
@@ -78,13 +72,15 @@ public class SaleController implements Initializable {
     static ProductService prodService = new ProductService();
     static CustomerService cusService = new CustomerService();
     static ReceiptService repService = new ReceiptService();
+    static CategoryService cateService = new CategoryService();
     static ReceiptDetailService detailService = new ReceiptDetailService();
     private Receipt receipt = new Receipt();
 
+    private User u =LoginController.userLogin;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            receipt.setStaffID("64acd540-7c61-4dad-9e8f-6efba1343652");
+            receipt.setStaffID(u.getId());
             loadProductTableColumns();
             loadTableProductData(null);
             loadReceiptColumn();
@@ -94,8 +90,11 @@ public class SaleController implements Initializable {
             Logger.getLogger(SaleController.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.txtCusSearch.textProperty().addListener(e -> {
-
-            this.loadTableCustomerData(this.txtCusSearch.getText());
+            try {
+                this.loadTableProductData(this.txtCusSearch.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(PromotionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         });
         this.txtProdSearch.textProperty().addListener(e -> {
@@ -108,16 +107,14 @@ public class SaleController implements Initializable {
     }
 
     public void loadCustomerColumns() {
-        TableColumn colName = new TableColumn("Name");
+        TableColumn colName = new TableColumn("Tên");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
-        colName.setPrefWidth(120);
+        colName.setPrefWidth(100);
 
-        TableColumn colPhone = new TableColumn("Phone");
+        TableColumn colPhone = new TableColumn("SĐT");
         colPhone.setCellValueFactory(new PropertyValueFactory("phoneNumber"));
-        TableColumn colSex = new TableColumn("Sex");
-        colSex.setCellValueFactory(new PropertyValueFactory("sex"));
 
-        TableColumn colBirthDay = new TableColumn("dateOfBirth");
+        TableColumn colBirthDay = new TableColumn("Ngày sinh");
         colBirthDay.setCellValueFactory(new PropertyValueFactory("dateOfBirth"));
 
         TableColumn colEmail = new TableColumn("Email");
@@ -133,49 +130,72 @@ public class SaleController implements Initializable {
                 Customer customer = (Customer) cell.getTableRow().getItem();
                 receipt.setCustomerID(customer.getId());
 
+                txtCus.setText(customer.getName());
                 java.time.LocalDate localDate = customer.getDateOfBirth().toLocalDate();
                 java.time.LocalDate now = java.time.LocalDate.now();
-                int compareResult = localDate.compareTo(now);
-
-                if (compareResult == 0) {
-                    txtBirthDay.setText("Giảm 10%");
+                if (localDate.getMonthValue() == now.getMonthValue() && localDate.getDayOfMonth() == now.getDayOfMonth()) {
+                    txtBirthDay.setText("10%");
                     birthday=(float) 0.1;
                 } else {
-                    txtBirthDay.setText("Không có giảm giá");
+                    txtBirthDay.setText("0%");
                     birthday = 1;
                 }
             });
 
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
+            btn.setStyle("-fx-background-color:  #4e73df; -fx-text-fill: white;");
+            TableCell<Customer, Void> c = new TableCell<>() {
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        Customer cus = getTableView().getItems().get(getIndex());
+                        setGraphic(cus.getId() != null && !cus.getId().isEmpty() ? btn : null);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
             return c;
-        }
-        );
+        });
 
-        this.tbCustomers.getColumns()
-                .addAll(colName, colPhone, colEmail, colBirthDay, colSex, colAdd);
+        this.tbCustomers.getColumns().addAll(colName, colPhone, colEmail, colBirthDay, colAdd);
     }
 
     public void loadProductTableColumns() {
-        TableColumn colName = new TableColumn("Name");
+        TableColumn colName = new TableColumn("Tên");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colName.setPrefWidth(120);
 
-        TableColumn colUnit = new TableColumn("Unit");
+        TableColumn colUnit = new TableColumn("Đơn vị");
         colUnit.setCellValueFactory(new PropertyValueFactory("unit"));
 
-        TableColumn colPrice = new TableColumn("Price");
+        TableColumn colPrice = new TableColumn("Giá");
         colPrice.setCellValueFactory(new PropertyValueFactory("price"));
+        colPrice.setCellFactory(column -> {
+            TableCell<Promotion, Float> cell = new TableCell<Promotion, Float>() {
+                @Override
+                protected void updateItem(Float item, boolean empty) {
+                    super.updateItem(item, empty);
 
-        TableColumn colOrigin = new TableColumn("Origin");
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        String formattedPrice = String.format("%,.0f VNĐ", item);
+                        setText(formattedPrice);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        TableColumn colOrigin = new TableColumn("Xuất Xứ");
         colOrigin.setCellValueFactory(new PropertyValueFactory("origin"));
 
-        TableColumn colCate = new TableColumn("CategoryID");
+        TableColumn colCate = new TableColumn("Loại SP");
         colCate.setCellValueFactory(new PropertyValueFactory("categoryID"));
-        colCate.setPrefWidth(40);
+        colCate.setPrefWidth(90);
         TableColumn colAdd = new TableColumn();
         colAdd.setCellFactory(r -> {
-            Button btn = new Button("Add");
+            Button btn = new Button("Thêm");
 
             btn.setOnAction(evt -> {
                 TableCell cell = (TableCell) btn.getParent();
@@ -210,29 +230,45 @@ public class SaleController implements Initializable {
                     }
                 }
             });
-
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
+            btn.setStyle("-fx-background-color:  #4e73df; -fx-text-fill: white;");
+            TableCell<Product, Void> c = new TableCell<>() {
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        Product prod = getTableView().getItems().get(getIndex());
+                        setGraphic(prod.getId() != null && !prod.getId().isEmpty() ? btn: null);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
             return c;
-        }
-        );
+
+        });
 
         this.tbProducts.getColumns()
                 .addAll(colName, colUnit, colPrice, colOrigin, colCate, colAdd);
     }
 
     public void loadTableProductData(String kw) throws SQLException {
-
-        List<Product> ques = prodService.getProducts(kw);
-
-        this.tbProducts.getItems().clear();
-        this.tbProducts.setItems(FXCollections.observableList(ques));
+        try {
+            List<Product> prods = prodService.getProducts(kw);
+            this.tbProducts.getItems().clear();
+            for (Product prod : prods) {
+                String categoryID = prod.getCategoryID();
+                Category cate = cateService.getCategoryByID(categoryID);
+                prod.setCategoryID(cate != null ? cate.getName() : "");
+            }
+            this.tbProducts.setItems(FXCollections.observableList(prods));
+        } catch (SQLException ex) {
+            Logger.getLogger(SaleController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void loadTableCustomerData(String kw) {
 
         try {
-            List<Customer> cus = cusService.getCustomers(kw);
+            List<Customer> cus = cusService.getCustomersByPhoneNumber(kw);
             this.tbCustomers.getItems().clear();
             this.tbCustomers.setItems(FXCollections.observableList(cus));
 
@@ -242,24 +278,56 @@ public class SaleController implements Initializable {
     }
 
     public void loadReceiptColumn() {
-        TableColumn colName = new TableColumn("Name");
+        TableColumn colName = new TableColumn("Tên");
         colName.setCellValueFactory(new PropertyValueFactory("name"));
-        colName.setPrefWidth(100);
 
-        TableColumn colUnit = new TableColumn("Unit");
+
+        TableColumn colUnit = new TableColumn("Đơn vị");
         colUnit.setCellValueFactory(new PropertyValueFactory("unit"));
-        colUnit.setPrefWidth(40);
-        TableColumn colPrice = new TableColumn("Price");
+        colUnit.setPrefWidth(60);
+        TableColumn colPrice = new TableColumn("Giá");
         colPrice.setCellValueFactory(new PropertyValueFactory("price"));
+        colPrice.setCellFactory(column -> {
+            TableCell<Promotion, Float> cell = new TableCell<Promotion, Float>() {
+                @Override
+                protected void updateItem(Float item, boolean empty) {
+                    super.updateItem(item, empty);
 
-        TableColumn colNewPrice = new TableColumn("New Price");
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        String formattedPrice = String.format("%,.0f VNĐ", item);
+                        setText(formattedPrice);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        TableColumn colNewPrice = new TableColumn("Khuyến mãi");
         colNewPrice.setCellValueFactory(new PropertyValueFactory("newPrice"));
+        colNewPrice.setCellFactory(column -> {
+            TableCell<Promotion, Float> cell = new TableCell<Promotion, Float>() {
+                @Override
+                protected void updateItem(Float item, boolean empty) {
+                    super.updateItem(item, empty);
 
-        TableColumn colQuantity = new TableColumn("Quantity");
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        String formattedPrice = String.format("%,.0f VNĐ", item);
+                        setText(formattedPrice);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        TableColumn colQuantity = new TableColumn("SL");
         colQuantity.setCellValueFactory(new PropertyValueFactory("quantity"));
-        colQuantity.setPrefWidth(60);
-        TableColumn colQuantityTxt = new TableColumn("Count ");
-        colQuantityTxt.setPrefWidth(50);
+        colQuantity.setPrefWidth(50);
+        TableColumn colQuantityTxt = new TableColumn("Nhập SL ");
+
         colQuantityTxt.setCellFactory(r -> {
             TextField txtQuantity = new TextField();
             txtQuantity.setText("");
@@ -295,14 +363,23 @@ public class SaleController implements Initializable {
                 }
             });
 
-            TableCell c = new TableCell();
-            c.setGraphic(txtQuantity);
+            TableCell<ProductPromotion, Void> c = new TableCell<>() {
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        ProductPromotion prod = getTableView().getItems().get(getIndex());
+                        setGraphic(prod.getId() != null && !prod.getId().isEmpty() ? txtQuantity: null);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
             return c;
         });
 
-        TableColumn colAdd = new TableColumn();
-        colAdd.setCellFactory(r -> {
-            Button btn = new Button("Delete");
+        TableColumn colDel = new TableColumn();
+        colDel.setCellFactory(r -> {
+            Button btn = new Button("Xóa");
 
             btn.setOnAction(evt -> {
                 TableCell cell = (TableCell) btn.getParent();
@@ -314,12 +391,22 @@ public class SaleController implements Initializable {
                 tbReceipt.refresh();
 
             });
-
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
+            btn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+            TableCell<ProductPromotion, Void> c = new TableCell<>() {
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        ProductPromotion prod = getTableView().getItems().get(getIndex());
+                        setGraphic(prod.getId() != null && !prod.getId().isEmpty() ? btn: null);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
             return c;
         });
-        this.tbReceipt.getColumns().addAll(colName, colUnit, colPrice, colNewPrice, colQuantity, colQuantityTxt, colAdd);
+        colDel.setPrefWidth(50);
+        this.tbReceipt.getColumns().addAll(colName, colUnit, colPrice, colNewPrice, colQuantity, colQuantityTxt, colDel);
     }
 
     public void setReceipt(List<ProductPromotion> ppList) {

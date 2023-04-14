@@ -89,7 +89,7 @@ public class ProductController implements Initializable {
 
     public void addProductHandler(ActionEvent event) throws SQLException {
         Category selectedCategory = (Category) cbCategories.getValue();
-        int categoryId = selectedCategory.getId();
+        String categoryId = selectedCategory.getId();
         Product prod = new Product(
                 this.txtName.getText(),
                 this.txtUnit.getText(),
@@ -180,12 +180,12 @@ public class ProductController implements Initializable {
                 txtUnit.setText(prod.getUnit());
                 txtPrice.setText(Float.toString(prod.getPrice()));
                 txtOrigin.setText(prod.getOrigin());
-                cbCategories.getSelectionModel().select(prod.getCategoryID() - 1);
+                cbCategories.getSelectionModel().select(prod.getCategoryID());
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
                 btnSave.setOnAction(event -> {
                     Category selectedCategory = (Category) cbCategories.getValue();
-           int categoryId = selectedCategory.getId();
+           String categoryId = selectedCategory.getId();
                     prod.setName(txtName.getText());
                     prod.setUnit(txtUnit.getText());
                     prod.setPrice(Float.parseFloat(txtPrice.getText()));

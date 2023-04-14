@@ -20,7 +20,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 
 /**
  * FXML Controller class
@@ -42,22 +44,27 @@ public class MainUIController implements Initializable {
     @FXML
     private Button btnCus;
     @FXML
+    private Button btnRe;
+    @FXML
+    private Button btnCate;
+    @FXML
     private Button btnPro;
     @FXML
-    private Button btnOut;
+    private Label hi;
 
+    private User u = LoginController.userLogin;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         btnProd.setOnAction(evt -> {
-            loadFxml("Product", vbxUI);
+            loadFxml("ProductUI", vbxUI);
         });
         btnSale.setOnAction(evt -> {
-            loadFxml("Sale", vbxUI);
+            loadFxml("SaleUI", vbxUI);
         });
         btnUser.setOnAction(evt -> {
             try {
-                loadFxml("User", vbxUI);
+                loadFxml("UserUI", vbxUI);
                 UserController uC = new UserController();
                 uC.resetUI(LoginController.userLogin);
 
@@ -66,12 +73,14 @@ public class MainUIController implements Initializable {
             }
         });
         btnBra.setOnAction(evt -> {
-            loadFxml("Branch", vbxUI);
+            loadFxml("BranchUI", vbxUI);
         });
 
         btnPro.setOnAction(evt -> {
-            loadFxml("Promotion", vbxUI);
+            loadFxml("PromotionUI", vbxUI);
         });
+
+        hi.setText("Xin chào "+ u.getName() + "!!!");
     }
 
     public void loadFxml(String fxmlFile, VBox UI) {
@@ -89,17 +98,21 @@ public class MainUIController implements Initializable {
     public void loadMainUI(User u) {
         if (u.getRole().toLowerCase().equals("admin")) {
             btnSale.setVisible(false);
+            btnSale.setManaged(false);
         }
-        else   if (u.getRole().toLowerCase().equals("quản lý")) {
+        else {
             btnBra.setVisible(false);
+            btnBra.setManaged(false);
             btnPro.setVisible(false);
+            btnPro.setManaged(false);
             btnProd.setVisible(false);
-
-        } else {
-            btnBra.setVisible(false);
-            btnPro.setVisible(false);
-            btnProd.setVisible(false);
+            btnProd.setManaged(false);
             btnUser.setVisible(false);
+            btnUser.setManaged(false);
+            btnCate.setVisible(false);
+            btnCate.setManaged(false);
+            btnRe.setVisible(false);
+            btnRe.setManaged(false);
         }
 
     }

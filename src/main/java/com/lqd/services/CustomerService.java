@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class CustomerService {
 
-    public List<Customer> getCustomers(String kw) throws SQLException {
+    public List<Customer> getCustomersByPhoneNumber(String kw) throws SQLException {
           List<Customer> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from customer";
