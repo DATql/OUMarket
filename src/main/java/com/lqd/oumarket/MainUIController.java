@@ -44,6 +44,7 @@ public class MainUIController implements Initializable {
     @FXML
     private Button btnCus;
     @FXML
+
     private Button btnRe;
     @FXML
     private Button btnCate;
@@ -52,21 +53,26 @@ public class MainUIController implements Initializable {
     @FXML
     private Label hi;
 
+
     private User u = LoginController.userLogin;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+
         btnProd.setOnAction(evt -> {
             loadFxml("ProductUI", vbxUI);
+
         });
         btnSale.setOnAction(evt -> {
             loadFxml("SaleUI", vbxUI);
         });
         btnUser.setOnAction(evt -> {
             try {
+
                 loadFxml("UserUI", vbxUI);
                 UserController uC = new UserController();
                 uC.resetUI(LoginController.userLogin);
+
 
             } catch (SQLException ex) {
                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,6 +98,7 @@ public class MainUIController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
     }
 
@@ -119,4 +126,28 @@ public class MainUIController implements Initializable {
 }
 
 
+    }
+
+    public void loadMainUI(String role) {
+        if (!role.toLowerCase().equals("admin")) {
+            if (role.toLowerCase().equals("Quản lý")) {
+
+            } else {
+                btnBra.setDisable(false);
+                btnCus.setVisible(false);
+                btnPro.setVisible(false);
+                btnProd.setVisible(false);
+                btnUser.setVisible(false);
+                ;
+            }
+
+
+        } else {
+            btnSale.setVisible(false);
+        }
+
+    }
+
+ 
+}
 

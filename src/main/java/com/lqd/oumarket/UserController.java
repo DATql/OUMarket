@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import com.lqd.utils.HashPassword;
 import com.lqd.utils.MessageBox;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -81,6 +82,7 @@ public class UserController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            
             loadTableColumns();
             loadTableData(null);
             resetUI(LoginController.userLogin);
@@ -430,5 +432,16 @@ public class UserController implements Initializable {
             }
 
         }
+    }
+    public void setComboBox(Branch p,User u){
+        List<Branch> branchList=new ArrayList<>();
+        String role = "Nhân Viên";
+                List<String> roles = new ArrayList<>();
+                roles.add(role);
+                branchList.add(p);
+        cbBranch.getItems().clear();
+        cbRole.getItems().clear();
+        cbBranch.setItems(FXCollections.observableList(branchList));
+        cbRole.setItems(FXCollections.observableList(roles));
     }
 }

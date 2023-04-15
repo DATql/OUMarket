@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="407.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqd.oumarket.LoginController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.199951171875" minWidth="10.0" prefWidth="178.0" />
@@ -52,4 +53,5 @@
             </GridPane.margin>
         </HBox>
     </children>
+
 </GridPane>

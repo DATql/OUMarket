@@ -21,7 +21,9 @@ import javafx.scene.Node;
 
 public class LoginController {
 
+
     public static User userLogin;
+
     @FXML
     private TextField txtUsername;
     @FXML
@@ -34,6 +36,7 @@ public class LoginController {
 
         UserService userService = new UserService();
         try {
+
             userLogin = userService.checkUser(username, password);
 //            if (userLogin != null) {
 //                Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -71,6 +74,7 @@ public class LoginController {
                 MessageBox.getBox("Thông báo", "Mật khẩu hoặc tài khoản không đúng", Alert.AlertType.ERROR).show();
             }
         } catch (SQLException ex) {
+
 
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
