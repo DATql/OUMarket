@@ -17,14 +17,36 @@ import java.util.List;
  * @author Gol
  */
 public class CustomerService {
+    public boolean addCustomer(Customer b) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            conn.setAutoCommit(false);
+            PreparedStatement stm1 = conn.prepareStatement("Insert into customer(id,name,dateofbirth,sex,phonenumber,email)Values(?,?,?,?,?,?)");
+            stm1.setString(1, b.getId());
+            stm1.setString(2, b.getName());
+            stm1.setDate(3, b.getDateOfBirth());
+            stm1.setString(4,b.getSex());
+            stm1.setString(5, b.getPhoneNumber());
+            stm1.setString(6,b.getEmail());
+            stm1.executeUpdate();
+            try {
+                conn.commit();
+                return true;
+            } catch (SQLException ex) {
+                System.err.println(ex.getMessage());
+                return false;
+            }
+        }
 
-    public List<Customer> getCustomersByPhoneNumber(String kw) throws SQLException {
-          List<Customer> results = new ArrayList<>();
+    }
+
+    public List<Customer> getCustomers(String kw) throws SQLException {
+        List<Customer> results = new ArrayList<>();
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from customer";
             if (kw != null && !kw.isEmpty()) {
-                sql += " WHERE phonenumber like concat('%', ?, '%')";
+                sql += "where name like concat('%',?,'%')";
             }
+
             PreparedStatement stm = conn.prepareCall(sql);
 
             if (kw != null && !kw.isEmpty()) {
@@ -47,5 +69,55 @@ public class CustomerService {
         return results;
     }
 
- 
+    public Customer getCustomer(String id) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "Select * from customer where name=?";
+
+            PreparedStatement stm = conn.prepareCall(sql);
+
+            stm.setString(1, id);
+            ResultSet rs = stm.executeQuery();
+              Customer c = new Customer(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getDate("dateofbirth"),
+                        rs.getString("sex"),
+                        rs.getString("phonenumber"),
+                        rs.getString("email"));
+            return c;
+        }
+    }
+
+    public boolean updateCustomer(Customer c) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            conn.setAutoCommit(false);
+            String sql = "Update customer set name=?,dateofbirth=?,sex=?,phonenumber=?,email=? where id=?  ";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, c.getName());
+            stm.setDate(2, c.getDateOfBirth());
+            stm.setString(3,c.getSex());
+            stm.setString(4, c.getPhoneNumber());
+            stm.setString(5,c.getEmail());
+                        stm.setString(6, c.getId());
+    
+            stm.executeUpdate();
+
+            try {
+                conn.commit();
+                return true;
+            } catch (SQLException ex) {
+                System.err.println(ex.getMessage());
+                return false;
+            }
+        }
+    }
+
+    public boolean deleteCustomer(String id) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "DELETE FROM customer WHERE id=?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, id);
+
+            return stm.executeUpdate() > 0;
+        }
+    }
 }

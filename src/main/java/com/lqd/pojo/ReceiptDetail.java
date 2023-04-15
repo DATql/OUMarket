@@ -20,9 +20,7 @@ public class ReceiptDetail {
     {
         id = UUID.randomUUID().toString();
     }
-    public ReceiptDetail(){
-        
-    }
+
     public ReceiptDetail(int quantity, String productID, String receiptID) {
 
         this.quantity = quantity;
