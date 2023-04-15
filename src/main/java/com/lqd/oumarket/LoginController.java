@@ -21,10 +21,9 @@ import javafx.scene.Node;
 
 public class LoginController {
 
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Button closeButton;
+
+    public static User userLogin;
+
     @FXML
     private TextField txtUsername;
     @FXML
@@ -37,28 +36,50 @@ public class LoginController {
 
         UserService userService = new UserService();
         try {
-            User u = userService.checkUser(username, password);
-            if(u!=null)
-            {
-        Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();     
-       FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MainUI.fxml"));
-       Parent root = fxmlLoader.load();
-       
-       MainUIController controller = fxmlLoader.getController();
-           
-            Scene scene = new Scene(root);
 
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-            loginStage.close();
+            userLogin = userService.checkUser(username, password);
+//            if (userLogin != null) {
+//                Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("MainUI1.fxml"));
+//                Parent root = fxmlLoader.load();
+//
+//                MainUIController controller = fxmlLoader.getController();
+//                controller.loadMainUI(userLogin);
+//                Scene scene = new Scene(root);
+//
+//                Stage stage = new Stage();
+//                stage.setScene(scene);
+//                stage.show();
+//                loginStage.close();
+//            }
+            if (userLogin != null) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainUI.fxml"));
+                    Parent root = fxmlLoader.load();
+
+                    MainUIController controller = fxmlLoader.getController();
+                    controller.loadMainUI(userLogin);
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+
+                    // Đóng Stage hiện tại
+                    ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            else
-                       MessageBox.getBox("Thông báo", "Mật khẩu hoặc tài khoản không đúng", Alert.AlertType.ERROR).show();
+            else {
+                MessageBox.getBox("Thông báo", "Mật khẩu hoặc tài khoản không đúng", Alert.AlertType.ERROR).show();
+            }
         } catch (SQLException ex) {
-                 
+
 
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }
+
+

@@ -15,13 +15,13 @@
   <children>
      <HBox prefHeight="22.0" prefWidth="728.0">
         <children>
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên Nhân Viên" />
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tên người dùng" />
            <TextField fx:id="txtName" prefHeight="26.0" prefWidth="175.0">
               <HBox.margin>
                  <Insets left="30.0" />
               </HBox.margin>
            </TextField>
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ">
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Địa chỉ">
               <HBox.margin>
                  <Insets left="30.0" />
               </HBox.margin>
@@ -38,13 +38,13 @@
      </HBox>
      <HBox prefHeight="22.0" prefWidth="728.0">
         <children>
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày Sinh" />
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ngày sinh" />
            <DatePicker fx:id="dpDateOfBirth">
               <HBox.margin>
                  <Insets left="55.0" />
               </HBox.margin>
            </DatePicker>
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giới Tính">
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Giới tính">
               <HBox.margin>
                  <Insets left="35.0" />
               </HBox.margin>
@@ -61,7 +61,7 @@
      </HBox>
      <HBox prefHeight="22.0" prefWidth="728.0">
         <children>
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số Điện Thoại" />
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số điện thoại" />
            <TextField fx:id="txtPhoneNumber" prefHeight="26.0" prefWidth="179.0">
               <HBox.margin>
                  <Insets left="35.0" />
@@ -86,7 +86,7 @@
               </HBox.margin>
            </Text>
            <ComboBox fx:id="cbBranch" prefWidth="150.0" />
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vai Trò">
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vai trò">
               <HBox.margin>
                  <Insets left="35.0" />
               </HBox.margin>
@@ -129,7 +129,7 @@
      </HBox>
      <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="728.0">
         <children>
-           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm nhân viên">
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm người dùng">
               <HBox.margin>
                  <Insets left="20.0" />
               </HBox.margin>

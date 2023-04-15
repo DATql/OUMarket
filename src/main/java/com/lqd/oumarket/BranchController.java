@@ -58,7 +58,7 @@ public class BranchController implements Initializable {
        try {
            loadTableColumns();
            loadTableData(null);
-           loadInterface();
+           resetUI();
        } catch (SQLException ex) {
            Logger.getLogger(BranchController.class.getName()).log(Level.SEVERE, null, ex);
        }  
@@ -119,27 +119,17 @@ public class BranchController implements Initializable {
 
 
            });
-
-
-           TableCell c = new TableCell<Branch, Void>() {
-               @Override
+           TableCell<Branch, Void> c = new TableCell<>() {
                protected void updateItem(Void item, boolean empty) {
                    super.updateItem(item, empty);
                    if (!empty) {
                        Branch branch = getTableView().getItems().get(getIndex());
-                       String name = branch.getName();
-                       if (name != null && !name.isEmpty()) {
-                           setGraphic(btn);
-                       } else {
-                           setGraphic(null);
-                       }
+                       setGraphic(branch.getId() != null && !branch.getId().isEmpty() ? btn : null);
                    } else {
                        setGraphic(null);
                    }
                }
            };
-
-
            return c;
        });
 
@@ -170,7 +160,7 @@ public class BranchController implements Initializable {
 
                                MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thành công", Alert.AlertType.INFORMATION).show();
                                loadTableData(null);
-                               loadInterface();
+                               resetUI();
                            }
                        } catch (SQLException ex) {
                            MessageBox.getBox("Thông báo", "Chỉnh sửa chi nhánh thất bại", Alert.AlertType.ERROR).show();
@@ -180,26 +170,17 @@ public class BranchController implements Initializable {
                });
            });
 
-
-           TableCell c = new TableCell<Branch, Void>() {
-               @Override
+           TableCell<Branch, Void> c = new TableCell<>() {
                protected void updateItem(Void item, boolean empty) {
                    super.updateItem(item, empty);
                    if (!empty) {
                        Branch branch = getTableView().getItems().get(getIndex());
-                       String name = branch.getName();
-                       if (name != null && !name.isEmpty()) {
-                           setGraphic(btn);
-                       } else {
-                           setGraphic(null);
-                       }
+                       setGraphic(branch.getId() != null && !branch.getId().isEmpty() ? btn : null);
                    } else {
                        setGraphic(null);
                    }
                }
            };
-
-
            return c;
        });
        this.tbBranchs.getColumns().addAll(colName, colAdress,  colDel, colUpdate);
@@ -207,15 +188,11 @@ public class BranchController implements Initializable {
 
 
    private void loadTableData(String kw) throws SQLException {
-
-
        List<Branch> branch = p.getBranchs(kw);
-
-
        this.tbBranchs.getItems().clear();
        this.tbBranchs.setItems(FXCollections.observableList(branch));
    }
-   private void loadInterface(){
+   private void resetUI(){
        this.txtName.setText(null);
        this.txtAdress.setText(null);
        btnSave.setVisible(false);
@@ -235,7 +212,7 @@ public class BranchController implements Initializable {
                if (p.addBranch(branch)) {
                    MessageBox.getBox("Thông báo", "Thêm chi nhánh mới thành công", Alert.AlertType.INFORMATION).show();
                    loadTableData(null);
-                   loadInterface();
+                   resetUI();
                }
            } catch (SQLException ex) {
                MessageBox.getBox("Thông báo", "Thêm chi nhánh mới thất bại", Alert.AlertType.ERROR).show();
@@ -245,7 +222,7 @@ public class BranchController implements Initializable {
    }
    public void CancelBranchHandler(ActionEvent event) throws SQLException {
        loadTableData(null);
-       loadInterface();
+       resetUI();
    }
   
 }

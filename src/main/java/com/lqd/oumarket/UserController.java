@@ -78,13 +78,14 @@ public class UserController implements Initializable {
     @FXML
     private Button btnCancel;
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             
             loadTableColumns();
             loadTableData(null);
-            loadInterface();
+            resetUI(LoginController.userLogin);
         } catch (SQLException ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -146,25 +147,17 @@ public class UserController implements Initializable {
 
             });
 
-            TableCell c = new TableCell<User, Void>() {
-                @Override
+            TableCell<User, Void> c = new TableCell<>() {
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
                     if (!empty) {
                         User user = getTableView().getItems().get(getIndex());
-                        String name = user.getName();
-                        String role = user.getRole().toLowerCase();
-                        if (name != null && !name.isEmpty() && !"admin".equals(role)) {
-                            setGraphic(btn);
-                        } else {
-                            setGraphic(null);
-                        }
+                        setGraphic(user.getId() != null && !user.getId().isEmpty() ? btn : null);
                     } else {
                         setGraphic(null);
                     }
                 }
             };
-
             return c;
         });
 
@@ -231,7 +224,9 @@ public class UserController implements Initializable {
                 } else {
                     dpDateOfBirth.setValue(null);
                 }
-
+                if(LoginController.userLogin.getRole().equals("quản lý")){
+                    this.cbBranch.setDisable(true);
+                }
                 cbSex.getSelectionModel().select(user.getSex());
                 txtUserName.setText(user.getUsername());
 
@@ -261,7 +256,7 @@ public class UserController implements Initializable {
                                     if (u.updateUser(user)) {
                                         MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thành công", Alert.AlertType.INFORMATION).show();
                                         loadTableData(null);
-                                        loadInterface();
+                                        resetUI(LoginController.userLogin);
                                     }
                                 } catch (SQLException ex) {
                                     MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thất bại", Alert.AlertType.ERROR).show();
@@ -302,7 +297,7 @@ public class UserController implements Initializable {
                                 if (u.updateUser(user)) {
                                     MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thành công", Alert.AlertType.INFORMATION).show();
                                     loadTableData(null);
-                                    loadInterface();
+                                    resetUI(LoginController.userLogin);
                                 }
                             } catch (SQLException ex) {
                                 MessageBox.getBox("Thông báo", "Chỉnh sửa người dùng thất bại", Alert.AlertType.ERROR).show();
@@ -316,32 +311,24 @@ public class UserController implements Initializable {
                 });
             });
 
-            TableCell c = new TableCell<User, Void>() {
-                @Override
+            TableCell<User, Void> c = new TableCell<>() {
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
                     if (!empty) {
                         User user = getTableView().getItems().get(getIndex());
-                        String name = user.getName();
-                        if (name != null && !name.isEmpty()) {
-                            setGraphic(btn);
-                        } else {
-                            setGraphic(null);
-                        }
+                        setGraphic(user.getId() != null && !user.getId().isEmpty() ? btn : null);
                     } else {
                         setGraphic(null);
                     }
                 }
             };
-
             return c;
         });
         this.tbUsers.getColumns().addAll(colName, colEmail, colBranch, colRole, colDel, colUpdate);
     }
 
     private void loadTableData(String kw) throws SQLException {
-
-        List<User> users = u.getUsers(kw);
+        List<User> users = u.getUsers(kw,LoginController.userLogin.getBranchID());
         this.tbUsers.getItems().clear();
         for (User user : users) {
             // Kiểm tra nếu giá trị của cột "branch" là trống thì gán giá trị mặc định là ""
@@ -359,15 +346,22 @@ public class UserController implements Initializable {
         this.tbUsers.setItems(FXCollections.observableList(users));
     }
 
-    private void loadInterface() throws SQLException {
-        List<Branch> branches = p.getBranchs("");
-        this.cbBranch.setItems(FXCollections.observableList(branches));
+    public void resetUI(User u) throws SQLException {
+        try {
+            List<Branch> branches = p.getBranchs("");
+            this.cbBranch.setItems(FXCollections.observableList(branches));
+        }catch(Exception ex) {
+        }
+        if(u.getRole().toLowerCase().equals("admin")){
+
+            List<String> roles = Arrays.asList("Nhân viên");
+            this.cbRole.setItems(FXCollections.observableList(roles));
+            cbBranch.setDisable(false);
+        }
 
         List<String> sex = Arrays.asList("Nam", "Nữ", "Khác");
         this.cbSex.setItems(FXCollections.observableList(sex));
 
-        List<String> roles = Arrays.asList("Quản lý", "Nhân viên");
-        this.cbRole.setItems(FXCollections.observableList(roles));
 
         txtEmail.setDisable(false);
         txtAddress.setDisable(false);
@@ -375,7 +369,7 @@ public class UserController implements Initializable {
         txtPhoneNumber.setDisable(false);
         dpDateOfBirth.setDisable(false);
         cbRole.setDisable(false);
-        cbBranch.setDisable(false);
+
         this.txtName.setText(null);
         this.txtAddress.setText(null);
         this.txtPhoneNumber.setText(null);
@@ -394,7 +388,7 @@ public class UserController implements Initializable {
 
     public void CancelUserHandler(ActionEvent event) throws SQLException {
         loadTableData(null);
-        loadInterface();
+        resetUI(LoginController.userLogin);
     }
 
     public void addUserHandler(ActionEvent event) throws SQLException {
@@ -426,7 +420,7 @@ public class UserController implements Initializable {
                         if (u.addUser(user)) {
                             MessageBox.getBox("Thông báo", "Thêm người dùng mới thành công", Alert.AlertType.INFORMATION).show();
                             loadTableData(null);
-                            loadInterface();
+                            resetUI(LoginController.userLogin);
                         }
                     } catch (SQLException ex) {
                         MessageBox.getBox("Thông báo", "Thêm người dùng mới thất bại", Alert.AlertType.ERROR).show();

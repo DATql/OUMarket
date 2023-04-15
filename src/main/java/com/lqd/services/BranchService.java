@@ -50,8 +50,8 @@ public class BranchService {
                sql += " where UPPER(name) like concat('%',UPPER(?),'%')";
            }
 
-
            PreparedStatement stm = conn.prepareCall(sql);
+
 
 
            if (kw != null && !kw.isEmpty()) {
@@ -66,9 +66,10 @@ public class BranchService {
                Branch p = new Branch(rs.getString("id"),
                        rs.getString("name"),
                        rs.getString("adress"));
-                    
                results.add(p);
            }
+
+
        }
 
 

@@ -17,7 +17,7 @@ public class Product {
     private String unit;
     private float price;
     private String origin;
-    private int categoryID;
+    private String categoryID;
 
     {
         id = UUID.randomUUID().toString();
@@ -26,7 +26,7 @@ public class Product {
         this.id = id;
         this.name = name;
     }
-    public Product(String name, String unit, float price, String origin, int categoryID) {
+    public Product(String name, String unit, float price, String origin, String categoryID) {
         this.name = name;
         this.unit = unit;
         this.price = price;
@@ -34,7 +34,7 @@ public class Product {
         this.categoryID = categoryID;
     }
 
-    public Product(String id, String name, String unit, float price, String origin, int categoryID) {
+    public Product(String id, String name, String unit, float price, String origin, String categoryID) {
         this.id = id;
         this.name = name;
         this.unit = unit;
@@ -83,11 +83,11 @@ public class Product {
         this.origin = origin;
     }
 
-    public int getCategoryID() {
+    public String getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(int categoryID) {
+    public void setCategoryID(String categoryID) {
         this.categoryID = categoryID;
     }
 
