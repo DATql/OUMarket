@@ -16,29 +16,29 @@ public class Product {
     private String name;
     private String unit;
     private float price;
-    private int quantity;
     private String origin;
-    private int categoryID;
+    private String categoryID;
 
     {
         id = UUID.randomUUID().toString();
     }
-
-    public Product(String name, String unit, float price, int quantity, String origin, int categoryID) {
+   public Product(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    public Product(String name, String unit, float price, String origin, String categoryID) {
         this.name = name;
         this.unit = unit;
         this.price = price;
-        this.quantity = quantity;
         this.origin = origin;
         this.categoryID = categoryID;
     }
 
-    public Product(String id, String name, String unit, float price, int quantity, String origin, int categoryID) {
+    public Product(String id, String name, String unit, float price, String origin, String categoryID) {
         this.id = id;
         this.name = name;
         this.unit = unit;
         this.price = price;
-        this.quantity = quantity;
         this.origin = origin;
         this.categoryID = categoryID;
     }
@@ -75,14 +75,6 @@ public class Product {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getOrigin() {
         return origin;
     }
@@ -91,11 +83,17 @@ public class Product {
         this.origin = origin;
     }
 
-    public int getCategoryID() {
+    public String getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(int categoryID) {
+    public void setCategoryID(String categoryID) {
         this.categoryID = categoryID;
     }
+
+    @Override
+    public String toString() {
+        return name; 
+    }
+    
 }
