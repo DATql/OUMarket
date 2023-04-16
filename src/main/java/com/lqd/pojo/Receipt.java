@@ -4,8 +4,7 @@
  */
 package com.lqd.pojo;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -13,45 +12,42 @@ import java.util.UUID;
  * @author Gol
  */
 public class Receipt {
-
     private String id;
     private Date createdDate;
     private float total;
-    private float tempTotal;
-    private float promotionTotal;
-    private float birthDay;
     private String staffID;
     private String customerID;
-
-    {
+     {
         id = UUID.randomUUID().toString();
-        createdDate = Date.valueOf(LocalDateTime.now().toLocalDate());
     }
+    public Receipt(Date createdDate, float total, String staffID, String customerID) {
 
-    public Receipt() {
-
-    }
-
-    public Receipt(float total, String staffID, String customerID) {
-
+        this.createdDate = createdDate;
         this.total = total;
         this.staffID = staffID;
         this.customerID = customerID;
     }
-
-    public void setReceipt(float birthDay,float tempTotal, float promotionTotal, float total ) {
+       public Receipt(String id, Date createdDate, float total, String staffID, String customerID) {
+        this.id = id;
+        this.createdDate = createdDate;
         this.total = total;
-        this.birthDay = birthDay;
-        this.promotionTotal = promotionTotal;
-        this.tempTotal = tempTotal;
+        this.staffID = staffID;
+        this.customerID = customerID;
     }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public float getTotal() {
@@ -70,6 +66,7 @@ public class Receipt {
         this.staffID = staffID;
     }
 
+
     public String getCustomerID() {
         return customerID;
     }
@@ -77,33 +74,5 @@ public class Receipt {
     public void setCustomerID(String customerID) {
         this.customerID = customerID;
     }
-
-    public float getTempTotal() {
-        return tempTotal;
-    }
-
-    public void setTempTotal(float tempTotal) {
-        this.tempTotal = tempTotal;
-    }
-
-    public float getPromotionTotal() {
-        return promotionTotal;
-    }
-
-    public void setPromotionTotal(float promotionTotal) {
-        this.promotionTotal = promotionTotal;
-    }
-
-    public float getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(float birthDay) {
-        this.birthDay = birthDay;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
+    
 }

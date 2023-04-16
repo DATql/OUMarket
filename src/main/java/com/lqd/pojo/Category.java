@@ -9,10 +9,10 @@ package com.lqd.pojo;
  * @author admin
  */
 public class Category {
-    private String id;
+    private int id;
     private String name;
 
-    public Category(String id, String name) {
+    public Category(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -30,14 +30,14 @@ public class Category {
     /**
      * @return the id
      */
-    public String getId() {
+    public int getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

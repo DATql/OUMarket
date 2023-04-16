@@ -42,7 +42,7 @@ public class ProductController implements Initializable {
     static ProductService p = new ProductService();
 
     @FXML
-     private TableView<Product> tbProducts;
+    TableView<Product> tbProducts;
     @FXML
     private ComboBox cbCategories;
     @FXML
@@ -51,7 +51,8 @@ public class ProductController implements Initializable {
     private TextField txtUnit;
     @FXML
     private TextField txtOrigin;
-   
+    @FXML
+    private TextField txtQuantity;
     @FXML
     private TextField txtPrice;
     @FXML
@@ -74,12 +75,11 @@ public class ProductController implements Initializable {
             this.cbCategories.setItems(FXCollections.observableList(cates));
             loadTableColumns();
             loadTableData(null);
-            cbCategories.getSelectionModel().selectFirst();
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            this.txtSearch.textProperty().addListener(e -> {
+        this.txtSearch.textProperty().addListener(e -> {
             try {
                 this.loadTableData(this.txtSearch.getText());
             } catch (SQLException ex) {
@@ -90,36 +90,27 @@ public class ProductController implements Initializable {
 
     public void addProductHandler(ActionEvent event) throws SQLException {
         Category selectedCategory = (Category) cbCategories.getValue();
-
-        String categoryId = selectedCategory.getId();
+        int categoryId = selectedCategory.getId();
         Product prod = new Product(
-
                 this.txtName.getText(),
                 this.txtUnit.getText(),
-                     
                 Float.parseFloat(this.txtPrice.getText()),
+                Integer.parseInt(this.txtQuantity.getText()),
                 this.txtOrigin.getText(),
                 categoryId
-                          
         );
-                   if (p.addProduct(prod)) {
-                MessageBox.getBox("Question", "Add product successful", Alert.AlertType.INFORMATION).show();
+        try {
+            if (p.addProduct(prod)) {
+                MessageBox.getBox("Question", "Add question successful", Alert.AlertType.INFORMATION).show();
                 loadTableData(null);
-                   }
             }
-            catch(NumberFormatException ne){
-                 MessageBox.getBox("Erorr", "  Giá bán phải là số nguyên", Alert.AlertType.INFORMATION).show();
-            }
-               
-           
-            
         } catch (SQLException ex) {
             MessageBox.getBox("Question", "Add question failed", Alert.AlertType.ERROR).show();
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-
+//ĐAng lỗi
 
     public void discardChangeHandler(ActionEvent event) {
 
@@ -135,6 +126,9 @@ public class ProductController implements Initializable {
 
         TableColumn colPrice = new TableColumn("Price");
         colPrice.setCellValueFactory(new PropertyValueFactory("price"));
+
+        TableColumn colQuantity = new TableColumn("Quantity");
+        colQuantity.setCellValueFactory(new PropertyValueFactory("quantity"));
 
         TableColumn colOrigin = new TableColumn("Origin");
         colOrigin.setCellValueFactory(new PropertyValueFactory("origin"));
@@ -190,16 +184,18 @@ public class ProductController implements Initializable {
                 txtName.setText(prod.getName());
                 txtUnit.setText(prod.getUnit());
                 txtPrice.setText(Float.toString(prod.getPrice()));
+                txtQuantity.setText(Integer.toString(prod.getQuantity()));
                 txtOrigin.setText(prod.getOrigin());
-                cbCategories.getSelectionModel().select(prod.getCategoryID());
+                cbCategories.getSelectionModel().select(prod.getCategoryID() - 1);
                 btnAdd.setVisible(false);
                 btnSave.setVisible(true);
                 btnSave.setOnAction(event -> {
                     Category selectedCategory = (Category) cbCategories.getValue();
-           String categoryId = selectedCategory.getId();
+                    int categoryId = selectedCategory.getId();
                     prod.setName(txtName.getText());
                     prod.setUnit(txtUnit.getText());
                     prod.setPrice(Float.parseFloat(txtPrice.getText()));
+                    prod.setQuantity(Integer.parseInt(txtQuantity.getText()));
                     prod.setOrigin(txtOrigin.getText());
                     prod.setCategoryID(categoryId);
                     try {
@@ -220,7 +216,7 @@ public class ProductController implements Initializable {
             c.setGraphic(btn);
             return c;
         });
-        this.tbProducts.getColumns().addAll(colName, colUnit, colPrice, colOrigin, colCate, colDel, colUpdate);
+        this.tbProducts.getColumns().addAll(colName, colUnit, colPrice, colQuantity, colOrigin, colCate, colDel, colUpdate);
     }
 
     private void loadTableData(String kw) throws SQLException {
