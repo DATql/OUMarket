@@ -22,14 +22,13 @@ public class ProductService {
     public boolean addProduct(Product p) throws SQLException {
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            PreparedStatement stm1 = conn.prepareStatement("Insert into product(id,name,unit,price,quantity,origin,categoryID)Values(?,?,?,?,?,?,?)");
+            PreparedStatement stm1 = conn.prepareStatement("Insert into product(id,name,unit,price,origin,categoryID)Values(?,?,?,?,?,?)");
             stm1.setString(1, p.getId());
             stm1.setString(2, p.getName());
             stm1.setString(3, p.getUnit());
             stm1.setFloat(4, p.getPrice());
-            stm1.setInt(5, p.getQuantity());
-            stm1.setString(6, p.getOrigin());
-            stm1.setInt(7, p.getCategoryID());
+            stm1.setString(5, p.getOrigin());
+            stm1.setString(6, p.getCategoryID());
             stm1.executeUpdate();
             try {
                 conn.commit();
@@ -47,9 +46,9 @@ public class ProductService {
         try (Connection conn = jdbcService.getConn()) {
             String sql = "Select * from product";
             if (kw != null && !kw.isEmpty()) {
-                 sql += " WHERE name like concat('%', ?, '%')";
+                sql += " where UPPER(name) like concat('%',UPPER(?),'%')";
             }
-
+            sql += " ORDER BY name";
             PreparedStatement stm = conn.prepareCall(sql);
 
             if (kw != null && !kw.isEmpty()) {
@@ -63,48 +62,80 @@ public class ProductService {
                         rs.getString("name"),
                         rs.getString("unit"),
                         rs.getFloat("price"),
-                        rs.getInt("quantity"), rs.getString("origin"),
-                        rs.getInt("categoryID"));
+                        rs.getString("origin"),
+                        rs.getString("categoryID"));
                 results.add(p);
             }
         }
-
         return results;
     }
 
-//    public Product getProduct(Product p) throws SQLException {
-//        try (Connection conn = jdbcService.getConn()) {
-//
-//            String sql = "Select * from product where name=?";
-//
-//            PreparedStatement stm = conn.prepareCall(sql);
-//
-//            stm.setString(1, name.getStr());
-//
-//            ResultSet rs = stm.executeQuery();
-//            Product p = new Product(rs.getString("id"),
-//                    rs.getString("name"),
-//                    rs.getString("unit"),
-//                    rs.getFloat("price"),
-//                    rs.getInt("quantity"), rs.getString("origin"),
-//                    rs.getInt("categoryID"));
-//
-//            return p;
-//        }
-//    }
+    public Product getProductbyName(String kw) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "Select * from product";
+            if (kw != null && !kw.isEmpty()) {
+                sql += " WHERE name = concat('%', ?, '%')";
+            }
+            PreparedStatement stm = conn.prepareCall(sql);
+
+            if (kw != null && !kw.isEmpty()) {
+                stm.setString(1, kw);
+            }
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Product p = new Product(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("unit"),
+                        rs.getFloat("price"),
+                        rs.getString("origin"),
+                        rs.getString("categoryID"));
+                return p;
+            }
+            return null;
+        }
+    }
+       public Product getProductbyID(String id) throws SQLException {
+        try (Connection conn = jdbcService.getConn()) {
+            String sql = "Select * from product";
+            if (id != null && !id.isEmpty()) {
+                sql += " WHERE id =?";
+            }
+
+            PreparedStatement stm = conn.prepareCall(sql);
+
+            if (id != null && !id.isEmpty()) {
+                stm.setString(1, id);
+            }
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Product p = new Product(rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("unit"),
+                        rs.getFloat("price"),
+                        rs.getString("origin"),
+                        rs.getString("categoryID"));
+
+                return p;
+            }
+
+            return null;
+        }
+    }
 
     public boolean updateProduct(Product p) throws SQLException {
+
         try (Connection conn = jdbcService.getConn()) {
             conn.setAutoCommit(false);
-            String sql = "Update product set name=?,unit=?,price=?,quantity=?,origin=?,categoryID=? where id=?  ";
+            String sql = "Update product set name=?,unit=?,price=?,origin=?,categoryID=? where id=?  ";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, p.getName());
             stm.setString(2, p.getUnit());
             stm.setFloat(3, p.getPrice());
-            stm.setInt(4, p.getQuantity());
-            stm.setString(5, p.getOrigin());
-            stm.setInt(6, p.getCategoryID());
-            stm.setString(7, p.getId());
+            stm.setString(4, p.getOrigin());
+            stm.setString(5, p.getCategoryID());
+            stm.setString(6, p.getId());
             stm.executeUpdate();
             try {
                 conn.commit();
@@ -125,4 +156,6 @@ public class ProductService {
             return stm.executeUpdate() > 0;
         }
     }
+    
 }
+
